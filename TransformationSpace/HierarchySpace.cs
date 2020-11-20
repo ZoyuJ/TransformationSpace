@@ -1,21 +1,14 @@
 ﻿
 namespace TransformationSpace {
-  using System;
   using System.Collections;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Collections.Specialized;
   using System.ComponentModel;
+  using System.Diagnostics.CodeAnalysis;
   using System.Numerics;
 
-  class HierarchySpace {
-
-    public readonly ITransformHieraryEntity Root;
-
-
-  }
-
-  public class SpaceObject : ITransformHieraryEntity, IEnumerable<ITransformHieraryEntity>, INotifyPropertyChanged {
+  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, IEnumerable<SpaceObject>, INotifyPropertyChanged {
     public string Name { get; set; }
 
     public SpaceObject() {
@@ -24,12 +17,12 @@ namespace TransformationSpace {
       _LocalPosition = Vector3.Zero;
       _LocalMatrix = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
       Matrix4x4.Invert(_LocalMatrix, out _WorldMatrix);
-      Children = new ObservableCollection<ITransformHieraryEntity>();
+      Children = new ObservableCollection<SpaceObject>();
       Children.CollectionChanged += OnChildrenChanged;
     }
 
-    protected ITransformHieraryEntity _Parent;
-    public ITransformHieraryEntity Parent {
+    protected SpaceObject _Parent;
+    public SpaceObject Parent {
       get => _Parent; set {
         if (Kits.CompareAndSet(value, ref _Parent)) {
           UpdateSelf();
@@ -37,10 +30,15 @@ namespace TransformationSpace {
         }
       }
     }
-    public ObservableCollection<ITransformHieraryEntity> Children { get; }
+    public ObservableCollection<SpaceObject> Children { get; }
+
+    public int Order { get; protected set; } = 0;
 
     #region Transform
     protected Vector3 _Position;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Vector3 Position {
       get => _Position;
       set {
@@ -51,6 +49,9 @@ namespace TransformationSpace {
       }
     }
     public Quaternion _Rotation;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Quaternion Rotation {
       get => _Rotation;
       set {
@@ -61,6 +62,9 @@ namespace TransformationSpace {
       }
     }
     public Vector3 _LocalScale;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Vector3 LocalScale {
       get => _LocalScale;
       set {
@@ -71,6 +75,9 @@ namespace TransformationSpace {
       }
     }
     protected Vector3 _LocalPosition;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Vector3 LocalPosition {
       get => _LocalPosition;
       set {
@@ -81,6 +88,9 @@ namespace TransformationSpace {
       }
     }
     public Quaternion _LocalRotation;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Quaternion LocalRotation {
       get => _LocalRotation;
       set {
@@ -90,11 +100,16 @@ namespace TransformationSpace {
         }
       }
     }
-
-    public Vector3 Rotation3 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public Vector3 RotationEuler {
       get => Rotation.ToEuler(); set => Rotation = Kits.FromEuler(value);
     }
-    public Vector3 LocalRotation3 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public Vector3 LocalRotationEuler {
       get => LocalRotation.ToEuler(); set => LocalRotation = Kits.FromEuler(value);
     }
 
@@ -138,7 +153,7 @@ namespace TransformationSpace {
       void HandleNew() {
         if (Args.NewItems != null && Args.NewItems.Count > 0) {
           for (int i = 0; i < Args.NewItems.Count; i++) {
-            var Item = Args.NewItems[i] as ITransformHieraryEntity;
+            var Item = Args.NewItems[i] as SpaceObject;
             Item.Parent = this;
           }
         }
@@ -146,7 +161,7 @@ namespace TransformationSpace {
       void HandleLost() {
         if (Args.NewItems != null && Args.OldItems.Count > 0) {
           for (int i = 0; i < Args.NewItems.Count; i++) {
-            var Item = Args.NewItems[i] as ITransformHieraryEntity;
+            var Item = Args.NewItems[i] as SpaceObject;
             Item.Parent = null;
           }
         }
@@ -154,7 +169,7 @@ namespace TransformationSpace {
       void HandleFull() {
         if (Children != null && Children.Count > 0) {
           for (int i = 0; i < Children.Count; i++) {
-            var Item = Children[i] as ITransformHieraryEntity;
+            var Item = Children[i];
             Item.Parent = this;
           }
         }
@@ -208,21 +223,21 @@ namespace TransformationSpace {
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-
     #region Itera
-    public IEnumerator<ITransformHieraryEntity> GetEnumerator() {
+    public IEnumerator<SpaceObject> GetEnumerator() {
       return Children.GetEnumerator();
     }
     IEnumerator IEnumerable.GetEnumerator() {
       return Children.GetEnumerator();
     }
     public int Count { get => (this.Children?.Count) ?? 0; }
-    public ITransformHieraryEntity this[int Index] {
+    public SpaceObject this[int Index] {
       get => this.Children[Index]; set => this.Children[Index] = value;
     }
 
     #endregion
 
+    public int CompareTo([AllowNull] SpaceObject other) => this.Order.CompareTo(other.Order);
 
     public static SpaceObject World {
       get {
@@ -233,63 +248,6 @@ namespace TransformationSpace {
         return W;
       }
     }
-
-  }
-
-  public static class Kits {
-    public const float Deg2Rad = (float)(Math.PI / 180.0);
-    public const float Rad2Deg = (float)(180.0 / Math.PI);
-
-    public static bool CompareAndSet<T>(T Value, ref T Target) {
-      if (!EqualityComparer<T>.Default.Equals(Value, Target)) {
-        Target = Value;
-        return true;
-      }
-      return false;
-    }
-
-    /// <summary>
-    /// Degree To Qua...
-    /// </summary>
-    /// <param name="Rotate"></param>
-    /// <returns></returns>
-    public static Quaternion FromEuler(in Vector3 Rotate) => Quaternion.CreateFromYawPitchRoll((Rotate.X * Deg2Rad) % 180.0f, (Rotate.Y * Deg2Rad) % 180.0f, (Rotate.Z * Deg2Rad) % 180.0f);
-    /// <summary>
-    /// Quaternion To Degree
-    /// https://stackoverflow.com/questions/1031005/is-there-an-algorithm-for-converting-quaternion-rotations-to-euler-angle-rotatio/2070899#2070899
-    /// </summary>
-    /// <param name="This"></param>
-    /// <returns></returns>
-    public static Vector3 ToEuler(this Quaternion This) {
-      float LengthSqr = This.LengthSquared();
-      return new Vector3(
-                (float)(Math.Atan2(2.0f * (This.Y * This.Z + This.X * This.W), 1.0f - 2.0f * (This.X * This.X + This.Y * This.Y))) * Rad2Deg,
-                (float)(Math.Asin(2.0f * (This.Y * This.W - This.X * This.Z) / LengthSqr)) * Rad2Deg,
-                (float)(Math.Atan2(2.0f * (This.X * This.Y + This.Z * This.W), 1.0f - 2.0f * (This.Y * This.Y + This.Z * This.Z))) * Rad2Deg
-              );
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Translate"></param>
-    /// <param name="Rotate"></param>
-    /// <param name="Scale"></param>
-    /// <returns></returns>
-    public static Matrix4x4 FromTRS(in Vector3 Translate, in Vector3 Rotate, in Vector3 Scale) {
-      return FromTRS(Translate, Kits.FromEuler(Rotate), Scale);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Translate"></param>
-    /// <param name="Rotate"></param>
-    /// <param name="Scale"></param>
-    /// <returns></returns>
-    public static Matrix4x4 FromTRS(in Vector3 Translate, in Quaternion Rotate, in Vector3 Scale) {
-      return Matrix4x4.CreateTranslation(Translate) * Matrix4x4.CreateFromQuaternion(Rotate) * Matrix4x4.CreateScale(Scale);
-    }
-
-
 
   }
 
