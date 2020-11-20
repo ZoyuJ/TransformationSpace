@@ -22,6 +22,8 @@ namespace TransformationSpace {
       _LocalScale = Vector3.One;
       _LocalRotation = Quaternion.Identity;
       _LocalPosition = Vector3.Zero;
+      _LocalMatrix = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+      Matrix4x4.Invert(_LocalMatrix, out _WorldMatrix);
       Children = new ObservableCollection<ITransformHieraryEntity>();
       Children.CollectionChanged += OnChildrenChanged;
     }
@@ -101,18 +103,22 @@ namespace TransformationSpace {
     //    return Matrix4x4.CreateTranslation(LocalPosition) * Matrix4x4.CreateFromQuaternion(LocalRotation) * Matrix4x4.CreateScale(LocalScale);
     //  }
     //}
-    public Matrix4x4 LocalMatrix { get; protected set; }
+    public Matrix4x4 _LocalMatrix;
+    public Matrix4x4 LocalMatrix { get => _LocalMatrix; }
+    protected Matrix4x4 _WorldMatrix;
+    public Matrix4x4 WorldMatrix { get => _WorldMatrix; }
 
     public virtual void UpdateSelf() {
       if (Parent == null) {
         Position = LocalPosition;
         Rotation = LocalRotation;
-        LocalMatrix = Kits.FromTRS(LocalPosition, LocalRotation, LocalScale);
+        _LocalMatrix = Kits.FromTRS(LocalPosition, LocalRotation, LocalScale);
+        Matrix4x4.Invert(LocalMatrix, out _WorldMatrix);
       }
       else {
         Position = Parent.Position + Vector3.Transform(LocalPosition, Parent.Rotation);
         Rotation = Quaternion.Multiply(Parent.Rotation, LocalRotation);
-        LocalMatrix = Parent.LocalMatrix * LocalMatrix;
+        _LocalMatrix = Parent.LocalMatrix * LocalMatrix;
       }
       if (Children.Count > 0)
         for (int i = 0; i < Children.Count; i++) {
@@ -180,16 +186,22 @@ namespace TransformationSpace {
 
     public void LookAt(in Vector3 Position) {
       var LMat = Matrix4x4.CreateLookAt(this.Position, Position, Vector3.UnitZ);
-      this.Rotation = Quaternion.CreateFromRotationMatrix(LMat);
+      this.LocalRotation = Quaternion.CreateFromRotationMatrix(LMat);
     }
 
-    public Vector3 WorldToLocalPosition(in Vector3 Position) {
+    public Vector3 ConvertWorldPositionToLocal(in Vector3 Position) {
       return Vector3.Transform(Position, LocalMatrix);
     }
+    public void WorldToLocalPosition(ref Vector3 Position) {
+      Position = Vector3.Transform(Position, LocalMatrix);
+    }
 
-
-
-
+    public Vector3 ConvertLocalPositionToWorld(in Vector3 Position) {
+      return Vector3.Transform(Position, WorldMatrix);
+    }
+    public void LocalToWorldPosition(ref Vector3 Position) {
+      Position = Vector3.Transform(Position, WorldMatrix);
+    }
 
     #endregion
 
@@ -214,11 +226,6 @@ namespace TransformationSpace {
     public static SpaceObject World {
       get {
         var W = new SpaceObject() {
-          Parent = null,
-          LocalMatrix = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY),
-          Position = Vector3.Zero,
-          Rotation = Quaternion.Identity,
-          LocalScale = Vector3.One,
           Name = "0",
         };
         W.UpdateSelf();

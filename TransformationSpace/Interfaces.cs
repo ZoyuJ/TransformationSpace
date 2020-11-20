@@ -12,9 +12,13 @@
     Vector3 LocalPosition { get; set; }
     Quaternion LocalRotation { get; set; }
     Matrix4x4 LocalMatrix { get; }
-    //Matrix4x4 WorldMatrix { get; protected set; }
+    Matrix4x4 WorldMatrix { get; }
 
-
+    void LookAt(in Vector3 Position);
+    Vector3 ConvertWorldPositionToLocal(in Vector3 Position);
+    void WorldToLocalPosition(ref Vector3 Position);
+    Vector3 ConvertLocalPositionToWorld(in Vector3 Position);
+    void LocalToWorldPosition(ref Vector3 Position);
 
   }
 
@@ -28,7 +32,7 @@
     string Name { get; set; }
     void UpdateSelf();
     void UpdateChildren();
-    ITransformHieraryEntity this[int Index] { get;set; }
+    ITransformHieraryEntity this[int Index] { get; set; }
     int Count { get; }
   }
 
