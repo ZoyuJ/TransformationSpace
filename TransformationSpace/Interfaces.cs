@@ -8,11 +8,16 @@
   public interface ITransform {
     Vector3 Position { get; set; }
     Quaternion Rotation { get; set; }
-    Vector3 Scale { get; set; }
+    Vector3 LocalScale { get; set; }
     Vector3 LocalPosition { get; set; }
     Quaternion LocalRotation { get; set; }
+    Matrix4x4 LocalMatrix { get; }
+    //Matrix4x4 WorldMatrix { get; protected set; }
+
+
 
   }
+
 
   public interface ITransformHieraryEntity : ITransform {
     ITransformHieraryEntity Parent { get; set; }
@@ -23,6 +28,8 @@
     string Name { get; set; }
     void UpdateSelf();
     void UpdateChildren();
+    ITransformHieraryEntity this[int Index] { get;set; }
+    int Count { get; }
   }
 
 }
