@@ -119,6 +119,7 @@ namespace TransformationSpace {
         Position = Parent.Position + Vector3.Transform(LocalPosition, Parent.Rotation);
         Rotation = Quaternion.Multiply(Parent.Rotation, LocalRotation);
         _LocalMatrix = Parent.LocalMatrix * LocalMatrix;
+        Matrix4x4.Invert(LocalMatrix, out _WorldMatrix);
       }
       if (Children.Count > 0)
         for (int i = 0; i < Children.Count; i++) {
