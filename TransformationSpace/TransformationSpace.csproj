@@ -10,6 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon-2.png</PackageIcon>
     <RepositoryUrl>https://github.com/ZoyuJ/TransformationSpace</RepositoryUrl>
+    <Description>Manage transformation space without rendering,like component 'Transform' in unity3d.</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

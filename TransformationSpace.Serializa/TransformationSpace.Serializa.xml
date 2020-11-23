@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TransformationSpace.Serializa</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.Vector3Converter" -->
+        <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.QuaternionConverter" -->
+        <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.SpaceObjectConverter" -->
+        <member name="F:TransformationSpace.Serializa.Serialization.NewtonJsonSettings">
+            <summary>
+            Default Newtonsoft Serialize Settings
+            already added Vector3Converter、QuaternionConverter and SpaceObjectConverter
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.Serializa.Serialization.Serialize(TransformationSpace.SpaceObject)">
+            <summary>
+            序列化
+            </summary>
+            <param name="Object"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Serializa.Serialization.Deserialize(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="Str"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

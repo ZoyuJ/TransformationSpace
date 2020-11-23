@@ -2,6 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <Company>ZoyuJ</Company>
+    <Authors>ZoyuJ</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ZoyuJ/TransformationSpace</RepositoryUrl>
+    <PackageIcon>Icon_Serializa-2.png</PackageIcon>
+    <Description>Serialize and deserialize implemention of TransformationSpace object.
+base on newtonsoft.json</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\TempProjects\TransformationSpace\TransformationSpace.Serializa\TransformationSpace.Serializa.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\TempProjects\TransformationSpace\TransformationSpace.Serializa\TransformationSpace.Serializa.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +29,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TransformationSpace\TransformationSpace.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Icon_Serializa-2.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
