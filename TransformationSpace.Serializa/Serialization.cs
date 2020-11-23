@@ -125,6 +125,39 @@
     }
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  public class DetectingQuaterionJsonConverter : JsonConverter {
+    public override bool CanConvert(Type objectType) {
+      return (objectType == typeof(Quaternion));
+    }
+
+    public DetectingQuaterionJsonConverter(bool SerializeUseEuler = true) {
+      this.SerializeUseEuler = SerializeUseEuler;
+    }
+
+    /// <summary>
+    /// true: Use Euler formatter for Serialization
+    /// </summary>
+    public bool SerializeUseEuler;
+
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+      if (SerializeUseEuler) {
+        var Q = ((Quaternion)value).ToEuler();
+        serializer.Serialize(writer, new float[] { Q.X, Q.Y, Q.Z });
+      }
+      else {
+        var Q = (Quaternion)value;
+        serializer.Serialize(writer, new float[] { Q.X, Q.Y, Q.Z, Q.W });
+      }
+    }
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+      var V = serializer.Deserialize<float[]>(reader);
+      return V.Length == 3 ? Kits.FromEuler(new Vector3(V[0], V[1], V[2])) : new Quaternion(V[0], V[1], V[2], V[3]);
+    }
+  }
+
   public static class Serialization {
     /// <summary>
     /// Vector3 <-De/Serialize-> [X,Y,Z]
@@ -139,6 +172,10 @@
     /// </summary>
     public static readonly EulerQuaternionJsonConverter EulerQuaternionConverter;
     /// <summary>
+    /// Quaternion (<-Convert-> Euler(Vector3)) <-De/Serialize-> [X,Y,Z]/[X,Y,Z,W]
+    /// </summary>
+    public static readonly DetectingQuaterionJsonConverter DetectingQuaterionConverter;
+    /// <summary>
     /// SpaceObject <-De/Serialize-> {}
     /// </summary>
     public static readonly SpaceObjectJsonConverter SpaceObjectConverter;
@@ -147,36 +184,53 @@
       Vector3Converter = new Vector3JsonConverter();
       QuaternionConverter = new QuaternionJsonConverter();
       EulerQuaternionConverter = new EulerQuaternionJsonConverter();
+      DetectingQuaterionConverter = new DetectingQuaterionJsonConverter(true);
       SpaceObjectConverter = new SpaceObjectJsonConverter();
     }
     /// <summary>
     /// 序列化
-    /// Quaternion is [X,Y,Z,W]
+    /// rotation value is [X,Y,Z,W]
     /// </summary>
     /// <param name="Object"></param>
     /// <returns></returns>
     public static string Serialize(SpaceObject Object) => JsonConvert.SerializeObject(Object, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, QuaternionConverter, SpaceObjectConverter } });
     /// <summary>
     /// 序列化
-    /// Quaternion is Euler[X,Y,Z]
+    /// rotation value is Euler[X,Y,Z]
     /// </summary>
     /// <param name="Object"></param>
     /// <returns></returns>
     public static string SerializeWithEuler(SpaceObject Object) => JsonConvert.SerializeObject(Object, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, EulerQuaternionConverter, SpaceObjectConverter } });
     /// <summary>
     /// 反序列化
-    /// Quaternion is [X,Y,Z,W]
+    /// rotation value is [X,Y,Z,W]
     /// </summary>
     /// <param name="Str"></param>
     /// <returns></returns>
     public static SpaceObject Deserialize(string Str) => JsonConvert.DeserializeObject<SpaceObject>(Str, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, QuaternionConverter, SpaceObjectConverter } });
     /// <summary>
     /// 反序列化
-    /// Quaternion is Euler[X,Y,Z]
+    /// rotation value is Euler[X,Y,Z]
     /// </summary>
     /// <param name="Str"></param>
     /// <returns></returns>
     public static SpaceObject DeserializeWithEuler(string Str) => JsonConvert.DeserializeObject<SpaceObject>(Str, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, EulerQuaternionConverter, SpaceObjectConverter } });
+    /// <summary>
+    /// 序列化
+    /// </summary>
+    /// <param name="Object"></param>
+    /// <param name="UseEulerFormatte">true:use Euler formatte</param>
+    /// <returns></returns>
+    public static string SerializeDetected(SpaceObject Object, in bool UseEulerFormatte = true) {
+      return JsonConvert.SerializeObject(Object, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, new DetectingQuaterionJsonConverter(UseEulerFormatte), SpaceObjectConverter } });
+    }
+    /// <summary>
+    /// 反序列化
+    /// Whatever rotation value formatte is Euler or Quaternion
+    /// </summary>
+    /// <param name="Str"></param>
+    /// <returns></returns>
+    public static string DeserializeDetected(SpaceObject Object) => JsonConvert.SerializeObject(Object, new JsonSerializerSettings() { Converters = new JsonConverter[] { Vector3Converter, DetectingQuaterionConverter, SpaceObjectConverter } });
 
   }
 
