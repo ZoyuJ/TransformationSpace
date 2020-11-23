@@ -1,8 +1,11 @@
 ﻿namespace Try {
   using System;
+  using System.Collections.ObjectModel;
   using System.Drawing.Drawing2D;
   using System.Linq;
   using System.Numerics;
+
+  using Newtonsoft.Json;
 
   using TransformationSpace;
 
@@ -15,6 +18,12 @@
       World.Children.Add(new SpaceObject() { Name = "0-1", LocalPosition = new Vector3(0.0F, 0.0F, 100.0F), LocalRotation = Kits.FromEuler(new Vector3(0.0F, 0F, 0.0F)), LocalScale = Vector3.One });
       World.Children.Add(new SpaceObject() { Name = "0-2", LocalPosition = Vector3.One * 4.0f, LocalRotation = Quaternion.Identity, LocalScale = Vector3.One });
       World.Children[1].Children.Add(new SpaceObject() { Name = "0-1-0", LocalPosition = new Vector3(0.0F, 100.0F, 0.0F), LocalRotation = Kits.FromEuler(new Vector3(0.0F, 0F, 0.0F)), LocalScale = Vector3.One });
+
+
+      var P = TransformationSpace.Serializa.Serialization.Serialize(World);
+      Console.WriteLine(P);
+      var PP = TransformationSpace.Serializa.Serialization.Deserialize(P);
+      Console.WriteLine(PP.Name);
 
       Console.ReadKey();
 

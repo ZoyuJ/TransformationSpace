@@ -6,7 +6,13 @@
   public static class Kits {
     public const float Deg2Rad = (float)(Math.PI / 180.0);
     public const float Rad2Deg = (float)(180.0 / Math.PI);
-
+    /// <summary>
+    /// 比较并赋值
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Value"></param>
+    /// <param name="Target"></param>
+    /// <returns>是否相同，true:不同并赋值，false:相同</returns>
     public static bool CompareAndSet<T>(T Value, ref T Target) {
       if (!EqualityComparer<T>.Default.Equals(Value, Target)) {
         Target = Value;

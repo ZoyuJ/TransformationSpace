@@ -8,9 +8,17 @@ namespace TransformationSpace {
   using System.Diagnostics.CodeAnalysis;
   using System.Numerics;
 
+  /// <summary>
+  /// TramsformationSpace节点
+  /// </summary>
   public class SpaceObject : ITransformHieraryEntity<SpaceObject>, IEnumerable<SpaceObject>, INotifyPropertyChanged {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public string Name { get; set; }
-
+    /// <summary>
+    /// default
+    /// </summary>
     public SpaceObject() {
       _LocalScale = Vector3.One;
       _LocalRotation = Quaternion.Identity;
@@ -20,8 +28,13 @@ namespace TransformationSpace {
       Children = new ObservableCollection<SpaceObject>();
       Children.CollectionChanged += OnChildrenChanged;
     }
-
+    /// <summary>
+    /// 父级
+    /// </summary>
     protected SpaceObject _Parent;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public SpaceObject Parent {
       get => _Parent; set {
         if (Kits.CompareAndSet(value, ref _Parent)) {
@@ -30,12 +43,16 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public ObservableCollection<SpaceObject> Children { get; }
-
-    public int Order { get; protected set; } = 0;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public int Order { get; set; } = 0;
 
     #region Transform
-    protected Vector3 _Position;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -48,7 +65,7 @@ namespace TransformationSpace {
         }
       }
     }
-    public Quaternion _Rotation;
+    internal Vector3 _Position;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -61,7 +78,7 @@ namespace TransformationSpace {
         }
       }
     }
-    public Vector3 _LocalScale;
+    internal Quaternion _Rotation;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -74,7 +91,7 @@ namespace TransformationSpace {
         }
       }
     }
-    protected Vector3 _LocalPosition;
+    internal Vector3 _LocalScale;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -87,7 +104,7 @@ namespace TransformationSpace {
         }
       }
     }
-    public Quaternion _LocalRotation;
+    internal Vector3 _LocalPosition;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -100,6 +117,7 @@ namespace TransformationSpace {
         }
       }
     }
+    internal Quaternion _LocalRotation;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -113,16 +131,19 @@ namespace TransformationSpace {
       get => LocalRotation.ToEuler(); set => LocalRotation = Kits.FromEuler(value);
     }
 
-    //public Matrix4x4 LocalMatrix {
-    //  get {
-    //    return Matrix4x4.CreateTranslation(LocalPosition) * Matrix4x4.CreateFromQuaternion(LocalRotation) * Matrix4x4.CreateScale(LocalScale);
-    //  }
-    //}
-    public Matrix4x4 _LocalMatrix;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Matrix4x4 LocalMatrix { get => _LocalMatrix; }
-    protected Matrix4x4 _WorldMatrix;
+    internal Matrix4x4 _LocalMatrix;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Matrix4x4 WorldMatrix { get => _WorldMatrix; }
-
+    internal Matrix4x4 _WorldMatrix;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public virtual void UpdateSelf() {
       if (Parent == null) {
         Position = LocalPosition;
@@ -141,7 +162,9 @@ namespace TransformationSpace {
           Children[i].UpdateSelf();
         }
     }
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public virtual void UpdateChildren() {
       if (Children.Count > 0) {
         for (int i = 0; i < Children.Count; i++) {
@@ -149,6 +172,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     protected virtual void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs Args) {
       void HandleNew() {
         if (Args.NewItems != null && Args.NewItems.Count > 0) {
@@ -199,46 +225,83 @@ namespace TransformationSpace {
     #endregion
 
     #region TransExten
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public void LookAt(in Vector3 Position) {
       var LMat = Matrix4x4.CreateLookAt(this.Position, Position, Vector3.UnitZ);
       this.LocalRotation = Quaternion.CreateFromRotationMatrix(LMat);
     }
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Vector3 ConvertWorldPositionToLocal(in Vector3 Position) {
       return Vector3.Transform(Position, LocalMatrix);
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public void WorldToLocalPosition(ref Vector3 Position) {
       Position = Vector3.Transform(Position, LocalMatrix);
     }
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public Vector3 ConvertLocalPositionToWorld(in Vector3 Position) {
       return Vector3.Transform(Position, WorldMatrix);
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public void LocalToWorldPosition(ref Vector3 Position) {
       Position = Vector3.Transform(Position, WorldMatrix);
     }
 
     #endregion
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public event PropertyChangedEventHandler PropertyChanged;
 
     #region Itera
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator<SpaceObject> GetEnumerator() {
       return Children.GetEnumerator();
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator IEnumerable.GetEnumerator() {
       return Children.GetEnumerator();
     }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public int Count { get => (this.Children?.Count) ?? 0; }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <param name="Index"></param>
+    /// <returns></returns>
     public SpaceObject this[int Index] {
       get => this.Children[Index]; set => this.Children[Index] = value;
     }
 
     #endregion
+    /// <summary>
+    /// 比较
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public int CompareTo([AllowNull] SpaceObject other) => this.GetHashCode().CompareTo(other.GetHashCode());
 
-    public int CompareTo([AllowNull] SpaceObject other) => this.Order.CompareTo(other.Order);
-
+    /// <summary>
+    /// 默认世界空间
+    /// </summary>
     public static SpaceObject World {
       get {
         var W = new SpaceObject() {

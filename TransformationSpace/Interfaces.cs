@@ -1,9 +1,7 @@
 ﻿namespace TransformationSpace {
   using System;
-  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Numerics;
-  using System.Text;
 
   /// <summary>
   /// 提供TRS与Matrix相关内容
@@ -111,6 +109,11 @@
     /// 更新子级TRS和Matrix
     /// </summary>
     void UpdateChildren();
+    /// <summary>
+    /// 子物体索引
+    /// </summary>
+    /// <param name="Index"></param>
+    /// <returns></returns>
     T this[int Index] { get; set; }
     /// <summary>
     /// 子级元素数量

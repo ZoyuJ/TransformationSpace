@@ -1,0 +1,347 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TransformationSpace</name>
+    </assembly>
+    <members>
+        <member name="T:TransformationSpace.SpaceObject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Name">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.#ctor">
+            <summary>
+            default
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.SpaceObject._Parent">
+            <summary>
+            父级
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Parent">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Children">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Order">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Position">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Rotation">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.LocalScale">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.LocalPosition">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.LocalRotation">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.RotationEuler">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.LocalRotationEuler">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.LocalMatrix">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.WorldMatrix">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.UpdateSelf">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.UpdateChildren">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.OnChildrenChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.ConvertWorldPositionToLocal(System.Numerics.Vector3@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.WorldToLocalPosition(System.Numerics.Vector3@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.ConvertLocalPositionToWorld(System.Numerics.Vector3@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.LocalToWorldPosition(System.Numerics.Vector3@)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="E:TransformationSpace.SpaceObject.PropertyChanged">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.GetEnumerator">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Count">
+            <summary>
+            <inheritdoc/>
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.Item(System.Int32)">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <param name="Index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.CompareTo(TransformationSpace.SpaceObject)">
+            <summary>
+            比较
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="P:TransformationSpace.SpaceObject.World">
+            <summary>
+            默认世界空间
+            </summary>
+        </member>
+        <member name="T:TransformationSpace.ITransform">
+            <summary>
+            提供TRS与Matrix相关内容
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.Position">
+            <summary>
+            世界空间偏移
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.Rotation">
+            <summary>
+            世界空间旋转
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.LocalScale">
+            <summary>
+            相对空间缩放
+            with out test and func
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.LocalPosition">
+            <summary>
+            相对空间偏移
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.LocalRotation">
+            <summary>
+            相对旋转
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.LocalMatrix">
+            <summary>
+            世界空间->相对空间
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.WorldMatrix">
+            <summary>
+            相对空间->世界空间
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.RotationEuler">
+            <summary>
+            世界空间旋转(Euler)
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransform.LocalRotationEuler">
+            <summary>
+            相对旋转(Euler)
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@)">
+            <summary>
+            朝向
+            </summary>
+            <param name="Position">世界空间坐标</param>
+        </member>
+        <member name="M:TransformationSpace.ITransform.ConvertWorldPositionToLocal(System.Numerics.Vector3@)">
+            <summary>
+            世界空间矢量转换到相对空间矢量
+            </summary>
+            <param name="Position">世界空间矢量</param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.ITransform.WorldToLocalPosition(System.Numerics.Vector3@)">
+            <summary>
+            世界空间矢量转换到相对空间矢量
+            </summary>
+            <param name="Position">世界空间矢量</param>
+        </member>
+        <member name="M:TransformationSpace.ITransform.ConvertLocalPositionToWorld(System.Numerics.Vector3@)">
+            <summary>
+            相对空间矢量转换到世界空间矢量
+            </summary>
+            <param name="Position">相对空间矢量</param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.ITransform.LocalToWorldPosition(System.Numerics.Vector3@)">
+            <summary>
+            相对空间矢量转换到世界空间矢量
+            </summary>
+            <param name="Position">相对空间矢量</param>
+        </member>
+        <member name="T:TransformationSpace.IRender">
+            <summary>
+            或许有新功能
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.IRender.Order">
+            <summary>
+            set 0,do comparer,no func
+            </summary>
+        </member>
+        <member name="T:TransformationSpace.ITransformHieraryEntity`1">
+            <summary>
+            层级与层级事件相关
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:TransformationSpace.ITransformHieraryEntity`1.Parent">
+            <summary>
+            父级
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransformHieraryEntity`1.Children">
+            <summary>
+            子级
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransformHieraryEntity`1.Name">
+            <summary>
+            need this?
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.ITransformHieraryEntity`1.UpdateSelf">
+            <summary>
+            更新自身TRS和Matrix
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.ITransformHieraryEntity`1.UpdateChildren">
+            <summary>
+            更新子级TRS和Matrix
+            </summary>
+        </member>
+        <member name="P:TransformationSpace.ITransformHieraryEntity`1.Item(System.Int32)">
+            <summary>
+            子物体索引
+            </summary>
+            <param name="Index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:TransformationSpace.ITransformHieraryEntity`1.Count">
+            <summary>
+            子级元素数量
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.Kits.CompareAndSet``1(``0,``0@)">
+            <summary>
+            比较并赋值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Value"></param>
+            <param name="Target"></param>
+            <returns>是否相同，true:不同并赋值，false:相同</returns>
+        </member>
+        <member name="M:TransformationSpace.Kits.FromEuler(System.Numerics.Vector3@)">
+            <summary>
+            Degree To Qua...
+            </summary>
+            <param name="Rotate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Kits.ToEuler(System.Numerics.Quaternion)">
+            <summary>
+            Quaternion To Degree
+            https://stackoverflow.com/questions/1031005/is-there-an-algorithm-for-converting-quaternion-rotations-to-euler-angle-rotatio/2070899#2070899
+            </summary>
+            <param name="This"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Kits.FromTRS(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+            <summary>
+            
+            </summary>
+            <param name="Translate"></param>
+            <param name="Rotate"></param>
+            <param name="Scale"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Kits.FromTRS(System.Numerics.Vector3@,System.Numerics.Quaternion@,System.Numerics.Vector3@)">
+            <summary>
+            
+            </summary>
+            <param name="Translate"></param>
+            <param name="Rotate"></param>
+            <param name="Scale"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
