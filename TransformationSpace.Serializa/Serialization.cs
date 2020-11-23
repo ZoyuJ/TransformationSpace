@@ -63,26 +63,28 @@
   /// <summary>
   /// SpaceObject <-De/Serialize-> {}
   /// </summary>
-  public class SpaceObjectJsonConverter : JsonConverter<SpaceObject> {
-    public override void WriteJson(JsonWriter writer, [AllowNull] SpaceObject value, JsonSerializer serializer) {
+  public class SpaceObjectJsonConverter : JsonConverter {
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+      var _value = (SpaceObject)(value);
       writer.WriteStartObject();
-      writer.WritePropertyName(nameof(value.Name));
-      writer.WriteValue(value.Name);
-      writer.WritePropertyName(nameof(value.Order));
-      writer.WriteValue(value.Order);
-      writer.WritePropertyName(nameof(value.LocalPosition));
-      serializer.Serialize(writer, value.LocalPosition);
-      writer.WritePropertyName(nameof(value.LocalRotation));
-      serializer.Serialize(writer, value.LocalRotation);
-      writer.WritePropertyName(nameof(value.LocalScale));
-      serializer.Serialize(writer, value.LocalScale);
-      writer.WritePropertyName(nameof(value.Parent));
+      writer.WritePropertyName(nameof(_value.Name));
+      writer.WriteValue(_value.Name);
+      writer.WritePropertyName(nameof(_value.Order));
+      writer.WriteValue(_value.Order);
+      writer.WritePropertyName(nameof(_value.LocalPosition));
+      serializer.Serialize(writer, _value.LocalPosition);
+      writer.WritePropertyName(nameof(_value.LocalRotation));
+      serializer.Serialize(writer, _value.LocalRotation);
+      writer.WritePropertyName(nameof(_value.LocalScale));
+      serializer.Serialize(writer, _value.LocalScale);
+      writer.WritePropertyName(nameof(_value.Parent));
       writer.WriteNull();
-      writer.WritePropertyName(nameof(value.Children));
-      serializer.Serialize(writer, value.Children);
+      writer.WritePropertyName(nameof(_value.Children));
+      serializer.Serialize(writer, _value.Children);
       writer.WriteEndObject();
     }
-    public override SpaceObject ReadJson(JsonReader reader, Type objectType, [AllowNull] SpaceObject existingValue, bool hasExistingValue, JsonSerializer serializer) {
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
       var Target = new SpaceObject();
       do {
         reader.Read();
@@ -123,7 +125,72 @@
       } while (true);
       return Target;
     }
+
+    public override bool CanConvert(Type objectType) {
+      return objectType == typeof(SpaceObject);
+    }
   }
+  //public class SpaceObjectJsonConverter : JsonConverter<SpaceObject> {
+  //  public override void WriteJson(JsonWriter writer, [AllowNull] SpaceObject value, JsonSerializer serializer) {
+  //    writer.WriteStartObject();
+  //    writer.WritePropertyName(nameof(value.Name));
+  //    writer.WriteValue(value.Name);
+  //    writer.WritePropertyName(nameof(value.Order));
+  //    writer.WriteValue(value.Order);
+  //    writer.WritePropertyName(nameof(value.LocalPosition));
+  //    serializer.Serialize(writer, value.LocalPosition);
+  //    writer.WritePropertyName(nameof(value.LocalRotation));
+  //    serializer.Serialize(writer, value.LocalRotation);
+  //    writer.WritePropertyName(nameof(value.LocalScale));
+  //    serializer.Serialize(writer, value.LocalScale);
+  //    writer.WritePropertyName(nameof(value.Parent));
+  //    writer.WriteNull();
+  //    writer.WritePropertyName(nameof(value.Children));
+  //    serializer.Serialize(writer, value.Children);
+  //    writer.WriteEndObject();
+  //  }
+  //  public override SpaceObject ReadJson(JsonReader reader, Type objectType, [AllowNull] SpaceObject existingValue, bool hasExistingValue, JsonSerializer serializer) {
+  //    var Target = new SpaceObject();
+  //    do {
+  //      reader.Read();
+  //      if (reader.TokenType == JsonToken.PropertyName) {
+  //        switch (reader.Value) {
+  //          case nameof(SpaceObject.Name):
+  //            Target.Name = reader.ReadAsString();
+  //            break;
+  //          case nameof(SpaceObject.Order):
+  //            Target.Order = reader.ReadAsInt32().Value;
+  //            break;
+  //          case nameof(SpaceObject.LocalPosition):
+  //            reader.Read();
+  //            Target.LocalPosition = serializer.Deserialize<Vector3>(reader);
+  //            break;
+  //          case nameof(SpaceObject.LocalRotation):
+  //            reader.Read();
+  //            Target.LocalRotation = serializer.Deserialize<Quaternion>(reader);
+  //            break;
+  //          case nameof(SpaceObject.LocalScale):
+  //            reader.Read();
+  //            Target.LocalScale = serializer.Deserialize<Vector3>(reader);
+  //            break;
+  //          case nameof(SpaceObject.Children):
+  //            reader.Read();
+  //            var P = serializer.Deserialize<SpaceObject[]>(reader);
+  //            for (int i = 0; i < P.Length; i++) {
+  //              Target.Children.Add(P[i]);
+  //            }
+  //            break;
+  //          default:
+  //            break;
+  //        }
+  //      }
+  //      else if (reader.TokenType == JsonToken.EndObject) {
+  //        break;
+  //      }
+  //    } while (true);
+  //    return Target;
+  //  }
+  //}
 
   /// <summary>
   /// 

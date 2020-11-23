@@ -8,14 +8,25 @@
         <!-- Badly formed XML comment ignored for member "T:TransformationSpace.Serializa.QuaternionJsonConverter" -->
         <!-- Badly formed XML comment ignored for member "T:TransformationSpace.Serializa.EulerQuaternionJsonConverter" -->
         <!-- Badly formed XML comment ignored for member "T:TransformationSpace.Serializa.SpaceObjectJsonConverter" -->
+        <member name="T:TransformationSpace.Serializa.DetectingQuaterionJsonConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Serializa.DetectingQuaterionJsonConverter.SerializeUseEuler">
+            <summary>
+            true: Use Euler formatter for Serialization
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.Vector3Converter" -->
         <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.QuaternionConverter" -->
         <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.EulerQuaternionConverter" -->
+        <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.DetectingQuaterionConverter" -->
         <!-- Badly formed XML comment ignored for member "F:TransformationSpace.Serializa.Serialization.SpaceObjectConverter" -->
         <member name="M:TransformationSpace.Serializa.Serialization.Serialize(TransformationSpace.SpaceObject)">
             <summary>
             序列化
-            Quaternion is [X,Y,Z,W]
+            rotation value is [X,Y,Z,W]
             </summary>
             <param name="Object"></param>
             <returns></returns>
@@ -23,7 +34,7 @@
         <member name="M:TransformationSpace.Serializa.Serialization.SerializeWithEuler(TransformationSpace.SpaceObject)">
             <summary>
             序列化
-            Quaternion is Euler[X,Y,Z]
+            rotation value is Euler[X,Y,Z]
             </summary>
             <param name="Object"></param>
             <returns></returns>
@@ -31,7 +42,7 @@
         <member name="M:TransformationSpace.Serializa.Serialization.Deserialize(System.String)">
             <summary>
             反序列化
-            Quaternion is [X,Y,Z,W]
+            rotation value is [X,Y,Z,W]
             </summary>
             <param name="Str"></param>
             <returns></returns>
@@ -39,7 +50,23 @@
         <member name="M:TransformationSpace.Serializa.Serialization.DeserializeWithEuler(System.String)">
             <summary>
             反序列化
-            Quaternion is Euler[X,Y,Z]
+            rotation value is Euler[X,Y,Z]
+            </summary>
+            <param name="Str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Serializa.Serialization.SerializeDetected(TransformationSpace.SpaceObject,System.Boolean@)">
+            <summary>
+            序列化
+            </summary>
+            <param name="Object"></param>
+            <param name="UseEulerFormatte">true:use Euler formatte</param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Serializa.Serialization.DeserializeDetected(TransformationSpace.SpaceObject)">
+            <summary>
+            反序列化
+            Whatever rotation value formatte is Euler or Quaternion
             </summary>
             <param name="Str"></param>
             <returns></returns>
