@@ -180,6 +180,9 @@ namespace TransformationSpace {
         if (Args.NewItems != null && Args.NewItems.Count > 0) {
           for (int i = 0; i < Args.NewItems.Count; i++) {
             var Item = Args.NewItems[i] as SpaceObject;
+            if (Item.Parent != null) {
+              Item.Parent.Children.Remove(Item);
+            }
             Item.Parent = this;
           }
         }
