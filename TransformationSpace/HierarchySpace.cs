@@ -12,6 +12,11 @@ namespace TransformationSpace {
   /// TramsformationSpace节点
   /// </summary>
   public class SpaceObject : ITransformHieraryEntity<SpaceObject>, IEnumerable<SpaceObject>, INotifyPropertyChanged {
+    protected static readonly Matrix4x4 WorldBase;
+    static SpaceObject() {
+      WorldBase = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
+
+    }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -23,8 +28,8 @@ namespace TransformationSpace {
       _LocalScale = Vector3.One;
       _LocalRotation = Quaternion.Identity;
       _LocalPosition = Vector3.Zero;
-      _LocalMatrix = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY);
-      Matrix4x4.Invert(_LocalMatrix, out _WorldMatrix);
+      _ToLocalMatrix = WorldBase;
+      Matrix4x4.Invert(_ToLocalMatrix, out _ToWorldMatrix);
       Children = new ObservableCollection<SpaceObject>();
       Children.CollectionChanged += OnChildrenChanged;
     }
@@ -38,7 +43,7 @@ namespace TransformationSpace {
     public SpaceObject Parent {
       get => _Parent; set {
         if (Kits.CompareAndSet(value, ref _Parent)) {
-          UpdateSelf();
+          UpdateSelfFromLocal();
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Parent)));
         }
       }
@@ -60,7 +65,9 @@ namespace TransformationSpace {
       get => _Position;
       set {
         if (Kits.CompareAndSet(value, ref _Position)) {
-          UpdateChildren();
+          UpdateSelfFromWorld();
+          //UpdateChildren();
+          //LocalPosition = Vector3.Transform(value, _ToLocalMatrix);
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
         }
       }
@@ -73,7 +80,9 @@ namespace TransformationSpace {
       get => _Rotation;
       set {
         if (Kits.CompareAndSet(value, ref _Rotation)) {
-          UpdateChildren();
+          UpdateSelfFromWorld();
+          //UpdateChildren();
+          //LocalRotation = Quaternion.Multiply(value, Quaternion.CreateFromRotationMatrix(_ToLocalMatrix));
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rotation)));
         }
       }
@@ -86,7 +95,7 @@ namespace TransformationSpace {
       get => _LocalScale;
       set {
         if (Kits.CompareAndSet(value, ref _LocalScale)) {
-          UpdateChildren();
+          UpdateSelfFromLocal();
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalScale)));
         }
       }
@@ -99,7 +108,7 @@ namespace TransformationSpace {
       get => _LocalPosition;
       set {
         if (Kits.CompareAndSet(value, ref _LocalPosition)) {
-          UpdateSelf();
+          UpdateSelfFromLocal();
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalPosition)));
         }
       }
@@ -112,7 +121,7 @@ namespace TransformationSpace {
       get => _LocalRotation;
       set {
         if (Kits.CompareAndSet(value, ref _LocalRotation)) {
-          UpdateSelf();
+          UpdateSelfFromLocal();
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalRotation)));
         }
       }
@@ -134,38 +143,65 @@ namespace TransformationSpace {
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Matrix4x4 LocalMatrix { get => _LocalMatrix; }
-    internal Matrix4x4 _LocalMatrix;
+    public Matrix4x4 ToLocalMatrix { get => _ToLocalMatrix; }
+    internal Matrix4x4 _ToLocalMatrix;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Matrix4x4 WorldMatrix { get => _WorldMatrix; }
-    internal Matrix4x4 _WorldMatrix;
+    public Matrix4x4 ToWorldMatrix { get => _ToWorldMatrix; }
+    internal Matrix4x4 _ToWorldMatrix;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual void UpdateSelf() {
+    public virtual void UpdateSelfFromLocal() {
       if (Parent == null) {
-        Position = LocalPosition;
-        Rotation = LocalRotation;
-        _LocalMatrix = Kits.FromTRS(LocalPosition, LocalRotation, LocalScale);
-        Matrix4x4.Invert(LocalMatrix, out _WorldMatrix);
+        _ToLocalMatrix = Kits.FromTRS(LocalPosition, LocalRotation, LocalScale);
+        _Position = LocalPosition;
+        _Rotation = LocalRotation;
       }
       else {
-        Position = Parent.Position + Vector3.Transform(LocalPosition, Parent.Rotation);
-        Rotation = Quaternion.Multiply(Parent.Rotation, LocalRotation);
-        _LocalMatrix = Parent.LocalMatrix * LocalMatrix;
-        Matrix4x4.Invert(LocalMatrix, out _WorldMatrix);
+        _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
+        _Position = Vector3.Transform(Parent.Position, _ToLocalMatrix);
+        _Rotation = Quaternion.Multiply(Parent.Rotation, Quaternion.CreateFromRotationMatrix(_ToLocalMatrix));
       }
-      UpdateChildren();
+      Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
+      UpdateChildrenFromLocal();
     }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual void UpdateChildren() {
+    public virtual void UpdateSelfFromWorld() {
+      if (Parent == null) {
+        _ToLocalMatrix = Kits.FromTRS(Position, Rotation, LocalScale);
+        _LocalPosition = Position;
+        _LocalRotation = LocalRotation;
+      }
+      else {
+        _LocalPosition = Vector3.Transform(Position, Parent.ToWorldMatrix);
+        _LocalRotation = Quaternion.Multiply(Rotation, Quaternion.CreateFromRotationMatrix(Parent.ToLocalMatrix));
+        _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
+      }
+      Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
+      UpdateChildrenFromWorld();
+    }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual void UpdateChildrenFromLocal() {
       if (Children.Count > 0) {
         for (int i = 0; i < Children.Count; i++) {
-          Children[i].UpdateSelf();
+          Children[i].UpdateSelfFromLocal();
+        }
+      }
+    }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual void UpdateChildrenFromWorld() {
+      if (Children.Count > 0) {
+        for (int i = 0; i < Children.Count; i++) {
+          Children[i].UpdateSelfFromWorld();
         }
       }
     }
@@ -227,36 +263,39 @@ namespace TransformationSpace {
     #endregion
 
     #region TransExten
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     public void LookAt(in Vector3 Position) {
-      var LMat = Matrix4x4.CreateLookAt(this.Position, Position, Vector3.UnitZ);
-      this.LocalRotation = Quaternion.CreateFromRotationMatrix(LMat);
+      if (this.Position.ToClose(Position)) return;
+      var LMat = Matrix4x4.CreateLookAt(this.Position, Position,
+        Vector3.Cross(Vector3.Normalize(Vector3.UnitY), Vector3.Normalize(this.Position - Position)) == Vector3.Zero ? Vector3.UnitX : Vector3.UnitY);
+      this.Rotation = Quaternion.CreateFromRotationMatrix(LMat);
     }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     public Vector3 ConvertWorldPositionToLocal(in Vector3 Position) {
-      return Vector3.Transform(Position, LocalMatrix);
+      return Vector3.Transform(Position, ToLocalMatrix);
     }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     public void WorldToLocalPosition(ref Vector3 Position) {
-      Position = Vector3.Transform(Position, LocalMatrix);
+      Position = Vector3.Transform(Position, ToLocalMatrix);
     }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     public Vector3 ConvertLocalPositionToWorld(in Vector3 Position) {
-      return Vector3.Transform(Position, WorldMatrix);
+      return Vector3.Transform(Position, ToWorldMatrix);
     }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     public void LocalToWorldPosition(ref Vector3 Position) {
-      Position = Vector3.Transform(Position, WorldMatrix);
+      Position = Vector3.Transform(Position, ToWorldMatrix);
     }
 
     #endregion
@@ -309,7 +348,7 @@ namespace TransformationSpace {
         var W = new SpaceObject() {
           Name = "0",
         };
-        W.UpdateSelf();
+        W.UpdateSelfFromLocal();
         return W;
       }
     }

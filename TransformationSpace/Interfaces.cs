@@ -31,11 +31,11 @@
     /// <summary>
     /// 世界空间->相对空间
     /// </summary>
-    Matrix4x4 LocalMatrix { get; }
+    Matrix4x4 ToLocalMatrix { get; }
     /// <summary>
     /// 相对空间->世界空间
     /// </summary>
-    Matrix4x4 WorldMatrix { get; }
+    Matrix4x4 ToWorldMatrix { get; }
 
     /// <summary>
     /// 世界空间旋转(Euler)
@@ -103,13 +103,21 @@
     /// </summary>
     string Name { get; set; }
     /// <summary>
-    /// 更新自身TRS和Matrix
+    /// 通过相对空间更新自身TRS和Matrix
     /// </summary>
-    void UpdateSelf();
+    void UpdateSelfFromLocal();
     /// <summary>
-    /// 更新子级TRS和Matrix
+    /// 通过世界空间更新自身TRS和Matrix
     /// </summary>
-    void UpdateChildren();
+    void UpdateSelfFromWorld();
+    /// <summary>
+    /// 通过相对空间更新子级TRS和Matrix
+    /// </summary>
+    void UpdateChildrenFromLocal();
+    /// <summary>
+    /// 通过世界空间更新子级TRS和Matrix
+    /// </summary>
+    void UpdateChildrenFromWorld();
     /// <summary>
     /// 子物体索引
     /// </summary>

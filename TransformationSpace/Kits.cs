@@ -6,6 +6,8 @@
   public static class Kits {
     public const float Deg2Rad = (float)(Math.PI / 180.0);
     public const float Rad2Deg = (float)(180.0 / Math.PI);
+    public const float Epsilon = 0.0001f;
+
     /// <summary>
     /// 比较并赋值
     /// </summary>
@@ -21,12 +23,17 @@
       return false;
     }
 
+    public static bool ToClose(in this float Left, in float Right) => Math.Abs(Left - Right) <= Epsilon;
+    public static bool ToClose(in this Vector3 Left, in Vector3 Right) => Math.Abs(Left.X - Right.X) <= Epsilon && Math.Abs(Left.Y - Right.Y) <= Epsilon && Math.Abs(Left.Z - Right.Z) <= Epsilon;
+    public static bool ToClose(in this Quaternion Left, in Quaternion Right) => Math.Abs(Left.X - Right.X) <= Epsilon && Math.Abs(Left.Y - Right.Y) <= Epsilon && Math.Abs(Left.Z - Right.Z) <= Epsilon && Math.Abs(Left.W - Right.W) <= Epsilon;
+    //public static bool ToClose(in this Matrix4x4 Left, in Matrix4x4 Right) => Math.Abs(Left - Right) <= Epsilon;
+
     /// <summary>
     /// Degree To Qua...
     /// </summary>
     /// <param name="Rotate"></param>
     /// <returns></returns>
-    public static Quaternion FromEuler(in Vector3 Rotate) => Quaternion.CreateFromYawPitchRoll((Rotate.X * Deg2Rad) % 360.0f, (Rotate.Y * Deg2Rad) % 360.0f, (Rotate.Z * Deg2Rad) % 360.0f);
+    public static Quaternion FromEuler(in Vector3 Rotate) => Quaternion.CreateFromYawPitchRoll(Rotate.X * Deg2Rad, Rotate.Y * Deg2Rad, Rotate.Z * Deg2Rad);
     /// <summary>
     /// Quaternion To Degree
     /// https://stackoverflow.com/questions/1031005/is-there-an-algorithm-for-converting-quaternion-rotations-to-euler-angle-rotatio/2070899#2070899
@@ -62,7 +69,18 @@
       return Matrix4x4.CreateTranslation(Translate) * Matrix4x4.CreateFromQuaternion(Rotate) * Matrix4x4.CreateScale(Scale);
     }
 
-
+    public static Matrix4x4 LookAtMatrix(in Vector3 Target, in Vector3 Position, in Vector3 Up) {
+      var forward = Vector3.Normalize(Position - Target);
+      var side = Vector3.Normalize(Vector3.Cross(Vector3.Normalize(Up), forward));
+      var up = Vector3.Normalize(Vector3.Cross(forward, side));
+      return new Matrix4x4(
+        side.X, up.X, forward.X, 0.0f,
+        side.Y, up.Y, forward.Y, 0.0f,
+        side.Z, up.Z, forward.Z, 0.0f,
+        -Vector3.Dot(side, Position),
+        -Vector3.Dot(up, Position),
+        -Vector3.Dot(forward, Position), 1.0f);
+    }
 
   }
 
