@@ -83,6 +83,7 @@
     /// set 0,do comparer,no func
     /// </summary>
     int Order { get; }
+    //bool HasChanged { get; set; }
   }
   /// <summary>
   /// 层级与层级事件相关
@@ -120,5 +121,7 @@
     /// </summary>
     int Count { get; }
   }
+
+
 
 }

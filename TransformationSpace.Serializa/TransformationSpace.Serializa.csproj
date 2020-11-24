@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.1.2</Version>
+    <Version>0.0.1.3</Version>
     <Company>ZoyuJ</Company>
     <Authors>ZoyuJ</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -12,8 +12,8 @@
     <PackageIcon>Icon_Serializa-2.png</PackageIcon>
     <Description>Serialize and deserialize implemention of TransformationSpace object.
 base on newtonsoft.json</Description>
-    <AssemblyVersion>0.0.1.2</AssemblyVersion>
-    <FileVersion>0.0.1.2</FileVersion>
+    <AssemblyVersion>0.0.1.3</AssemblyVersion>
+    <FileVersion>0.0.1.3</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
