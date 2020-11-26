@@ -25,7 +25,7 @@
     /// </summary>
     Vector3 LocalPosition { get; set; }
     /// <summary>
-    /// 相对旋转
+    /// 相对空间旋转
     /// </summary>
     Quaternion LocalRotation { get; set; }
     /// <summary>
@@ -42,7 +42,7 @@
     /// </summary>
     Vector3 RotationEuler { get; set; }
     /// <summary>
-    /// 相对旋转(Euler)
+    /// 相对空间旋转(Euler)
     /// </summary>
     Vector3 LocalRotationEuler { get; set; }
 
@@ -76,7 +76,7 @@
 
   }
   /// <summary>
-  /// 或许有新功能
+  /// 或许有新功能，之后脏标记更新方案
   /// </summary>
   public interface IRender {
     /// <summary>

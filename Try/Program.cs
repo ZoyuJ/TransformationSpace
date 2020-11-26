@@ -24,12 +24,25 @@
       //var M = Quaternion.CreateFromRotationMatrix(Matrix4x4.CreateFromYawPitchRoll(0f, 90.0f * Kits.Deg2Rad, 0f));
       //Console.WriteLine(M);
       //Console.WriteLine(M.ToEuler());
-      //var MM = Kits.FromEuler(new Vector3(0F, 90F, 0F));
+
+      //var Q = new Quaternion(0, 1, 0, 0);
+      //Console.WriteLine(Q);
+      //Console.WriteLine(Q.ToEuler());
+      //var Q2 = new Quaternion(0, -1, 0, 0);
+      //Console.WriteLine(Q2);
+      //Console.WriteLine(Q2.ToEuler());
+      //var MM = Kits.FromEuler(new Vector3(180F, 0F, 180F));
       //Console.WriteLine(MM);
       //Console.WriteLine(MM.ToEuler());
-      //var MM2 = Kits.FromEuler(new Vector3(0F, 0F, 90F));
+
+      //var MM2 = Kits.FromEuler(new Vector3(180F, 180F, 180F));
       //Console.WriteLine(MM2);
       //Console.WriteLine(MM2.ToEuler());
+      //var MM3 = Kits.FromEuler(new Vector3(-180F, -180F, -180F));
+      //Console.WriteLine(MM3);
+      //Console.WriteLine(MM3.ToEuler());
+      //Console.WriteLine(Math.Acos(Vector3.Dot(Vector3.UnitX, -Vector3.UnitX)) * Kits.Rad2Deg);
+
 
       SpaceObject World = SpaceObject.World;
       var B1 = new SpaceObject() { Name = "0-0", LocalPosition = Vector3.Zero, LocalRotation = Quaternion.Identity, LocalScale = Vector3.One };
@@ -48,28 +61,29 @@
       new Vector3(10,0,10),
       new Vector3(10,10,10),
       };
-      //var B11 = new SpaceObject() { Name = "0-0-0", LocalPosition = new Vector3(100.0f, 0f, 0f) };
-      //B1.Children.Add(B11);
+      var B11 = new SpaceObject() { Name = "0-0-0", LocalPosition = new Vector3(100.0f, 0f, 0f) };
+      B1.Children.Add(B11);
 
       //B11.Position = new Vector3(200F, 0F, 0F);
       //B1.Position = new Vector3(100f, 0f, 0f);
 
       //B11.LocalRotationEuler = new Vector3(45.0F, 0F, 0F);
-      //B1.LocalRotationEuler = new Vector3(45.0F, 0F, 0F);
-
+      //B1.LocalRotationEuler = new Vector3(90.0F, 0F, 0F);
+      //B11.LocalPosition = new Vector3(1F, 0F, 1F);
 
       //B11.Position = new Vector3(200F, 200F, 0F);
       //B11.Position = new Vector3(200F, 200F, 200F);
 
-      //for (int i = 0; i < TestPoses.Length; i++) {
-      //  B2.LocalPosition = TestPoses[i];
-      //  B2.LookAt(B1.Position);
-      //  Console.WriteLine($"B1 LP= {B1.LocalPosition}");
-      //  Console.WriteLine($"B2 LP= {B2.LocalPosition}");
-      //  Console.WriteLine($"B2 LR= {B2.LocalRotationEuler}");
-      //  Console.WriteLine($"B2 WR= {B2.RotationEuler}");
-      //  Console.WriteLine("======");
-      //}
+      for (int i = 0; i < TestPoses.Length; i++) {
+        B2.LocalPosition = TestPoses[i];
+        Console.WriteLine(TestPoses[i]);
+        B1.LookAt(B2.Position);
+        Console.WriteLine($"B1 LP= {B1.LocalPosition}");
+        Console.WriteLine($"B2 LP= {B2.LocalPosition}");
+        Console.WriteLine($"B1 LR= {B1.LocalRotationEuler} {B1.LocalRotation}");
+        Console.WriteLine($"B1 WR= {B1.RotationEuler} {B1.Rotation}");
+        Console.WriteLine("======");
+      }
 
       Console.WriteLine("Done");
       Console.ReadKey();

@@ -332,6 +332,86 @@
             <param name="Target"></param>
             <returns>是否相同，true:不同并赋值，false:相同</returns>
         </member>
+        <member name="F:TransformationSpace.Kits.EulerPosX">
+            <summary>
+            绕X轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerNegX">
+            <summary>
+            绕X轴旋转-180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerPosY">
+            <summary>
+            绕Y轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerNegY">
+            <summary>
+            绕Y轴旋转-180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerPosZ">
+            <summary>
+            绕Z轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerNegZ">
+            <summary>
+            绕Z轴旋转-180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerIdentityZero">
+            <summary>
+            不旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerIdentityPos">
+            <summary>
+            正方向旋转至不旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.EulerIdentityNeg">
+            <summary>
+            负方向旋转至不旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionIdentityNeg">
+            <summary>
+            不旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionPosX">
+            <summary>
+            绕X轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionNegX">
+            <summary>
+            绕X轴旋转-180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionPosY">
+            <summary>
+            绕Y轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionNegY">
+            <summary>
+            绕Y轴旋转-180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionPosZ">
+            <summary>
+            绕Z轴旋转180°
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.Kits.QuaternionNegZ">
+            <summary>
+            绕Z轴旋转-180°
+            </summary>
+        </member>
         <member name="M:TransformationSpace.Kits.FromEuler(System.Numerics.Vector3@)">
             <summary>
             Degree To Qua...
@@ -363,6 +443,18 @@
             <param name="Translate"></param>
             <param name="Rotate"></param>
             <param name="Scale"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransformationSpace.Kits.GetMatrix4x4Pass(System.Numerics.Matrix4x4@,System.Int32@)">
+            <summary>
+            Indexer4Matrix4x4
+            11 12 13 14     00 01 02 03
+            21 22 23 24     04 05 06 07
+            31 32 33 34 =>  08 09 10 11
+            41 42 43 44     12 13 14 15
+            </summary>
+            <param name="This"></param>
+            <param name="PassIndex"></param>
             <returns></returns>
         </member>
         <member name="T:TransformationSpace.DataStorage`1">

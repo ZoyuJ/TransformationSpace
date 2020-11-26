@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Company>ZoyuJ</Company>
-    <Version>0.0.1.2</Version>
+    <Version>0.0.2.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon-2.png</PackageIcon>
     <RepositoryUrl>https://github.com/ZoyuJ/TransformationSpace</RepositoryUrl>
