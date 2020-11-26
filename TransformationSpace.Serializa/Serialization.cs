@@ -192,20 +192,20 @@
   //  }
   //}
 
-  public class DataStorageJsonConverter<T> : JsonConverter {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-      var _value = (DataStorage<T>)(value);
-      serializer.Serialize(writer, _value);
-    }
+  //public class DataStorageJsonConverter<T> : JsonConverter {
+  //  public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+  //    var _value = (DataStorage<T>)(value);
+  //    serializer.Serialize(writer, _value);
+  //  }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-      return new DataStorage<T>(serializer.Deserialize<T>(reader), false);
-    }
+  //  public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+  //    return new DataStorage<T>(serializer.Deserialize<T>(reader), false);
+  //  }
 
-    public override bool CanConvert(Type objectType) {
-      return objectType == typeof(DataStorage<T>);
-    }
-  }
+  //  public override bool CanConvert(Type objectType) {
+  //    return objectType == typeof(DataStorage<T>);
+  //  }
+  //}
 
   /// <summary>
   /// 

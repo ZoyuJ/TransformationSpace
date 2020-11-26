@@ -248,41 +248,6 @@
 
   }
 
-  /// <summary>
-  /// data with dirty flag
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public struct DataStorage<T> {
-    private T _Data;
-    /// <summary>
-    /// target data
-    /// </summary>
-    public T Data {
-      get => _Data;
-      set {
-        if (Kits.CompareAndSet(value, ref _Data)) {
-          Dirty = true;
-        }
-      }
-    }
-    /// <summary>
-    /// data changed flag
-    /// </summary>
-    public bool Dirty { get; set; }
-    /// <summary>
-    /// set data and dont set flag
-    /// </summary>
-    /// <param name="Data"></param>
-    public void SetData(T Data) => _Data = Data;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Data">default data</param>
-    /// <param name="SetChanged">defaut flag</param>
-    public DataStorage(in T Data, in bool SetChanged = false) {
-      _Data = Data;
-      Dirty = SetChanged;
-    }
-  }
+
 
 }

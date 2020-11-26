@@ -11,7 +11,7 @@
         </member>
         <member name="P:TransformationSpace.SpaceObject.Name">
             <summary>
-            <inheritdoc/>
+            need this?
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.#ctor">
@@ -26,12 +26,12 @@
         </member>
         <member name="P:TransformationSpace.SpaceObject.Parent">
             <summary>
-            <inheritdoc/>
+            父级
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.Children">
             <summary>
-            <inheritdoc/>
+            子级
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.Order">
@@ -41,67 +41,68 @@
         </member>
         <member name="P:TransformationSpace.SpaceObject.Position">
             <summary>
-            <inheritdoc/>
+            世界空间偏移
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.Rotation">
             <summary>
-            <inheritdoc/>
+            世界空间旋转
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.LocalScale">
             <summary>
-            <inheritdoc/>
+            相对空间缩放
+            with out test and func
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.LocalPosition">
             <summary>
-            <inheritdoc/>
+            相对空间偏移
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.LocalRotation">
             <summary>
-            <inheritdoc/>
+            相对空间旋转
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.RotationEuler">
             <summary>
-            <inheritdoc/>
+            世界空间旋转(Euler)
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.LocalRotationEuler">
             <summary>
-            <inheritdoc/>
+            相对空间旋转(Euler)
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.ToLocalMatrix">
             <summary>
-            <inheritdoc/>
+            世界空间->相对空间
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.ToWorldMatrix">
             <summary>
-            <inheritdoc/>
+            相对空间->世界空间
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.UpdateSelfFromLocal">
             <summary>
-            <inheritdoc/>
+            通过相对空间更新自身TRS和Matrix
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.UpdateSelfFromWorld">
             <summary>
-            <inheritdoc/>
+            通过世界空间更新自身TRS和Matrix
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.UpdateChildrenFromLocal">
             <summary>
-            <inheritdoc/>
+            通过相对空间更新子级TRS和Matrix
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.UpdateChildrenFromWorld">
             <summary>
-            <inheritdoc/>
+            通过世界空间更新子级TRS和Matrix
             </summary>
         </member>
         <member name="M:TransformationSpace.SpaceObject.OnChildrenChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
@@ -113,28 +114,41 @@
         </member>
         <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@)">
             <summary>
+            朝向
+            </summary>
+            <param name="Position">世界空间坐标</param>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.LookAt(TransformationSpace.SpaceObject@)">
+            <summary>
             <inheritdoc/>
             </summary>
+            <param name="Target"></param>
         </member>
         <member name="M:TransformationSpace.SpaceObject.ConvertWorldPositionToLocal(System.Numerics.Vector3@)">
             <summary>
-            <inheritdoc/>
+            世界空间矢量转换到相对空间矢量
             </summary>
+            <param name="Position">世界空间矢量</param>
+            <returns></returns>
         </member>
         <member name="M:TransformationSpace.SpaceObject.WorldToLocalPosition(System.Numerics.Vector3@)">
             <summary>
-            <inheritdoc/>
+            世界空间矢量转换到相对空间矢量
             </summary>
+            <param name="Position">世界空间矢量</param>
         </member>
         <member name="M:TransformationSpace.SpaceObject.ConvertLocalPositionToWorld(System.Numerics.Vector3@)">
             <summary>
-            <inheritdoc/>
+            相对空间矢量转换到世界空间矢量
             </summary>
+            <param name="Position">相对空间矢量</param>
+            <returns></returns>
         </member>
         <member name="M:TransformationSpace.SpaceObject.LocalToWorldPosition(System.Numerics.Vector3@)">
             <summary>
-            <inheritdoc/>
+            相对空间矢量转换到世界空间矢量
             </summary>
+            <param name="Position">相对空间矢量</param>
         </member>
         <member name="E:TransformationSpace.SpaceObject.PropertyChanged">
             <summary>
@@ -143,24 +157,24 @@
         </member>
         <member name="M:TransformationSpace.SpaceObject.GetEnumerator">
             <summary>
-            <inheritdoc/>
+            遍历
             </summary>
             <returns></returns>
         </member>
         <member name="M:TransformationSpace.SpaceObject.System#Collections#IEnumerable#GetEnumerator">
             <summary>
-            <inheritdoc/>
+            遍历
             </summary>
             <returns></returns>
         </member>
         <member name="P:TransformationSpace.SpaceObject.Count">
             <summary>
-            <inheritdoc/>
+            子级元素数量
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.Item(System.Int32)">
             <summary>
-            <inheritdoc/>
+            子物体索引
             </summary>
             <param name="Index"></param>
             <returns></returns>
@@ -205,7 +219,7 @@
         </member>
         <member name="P:TransformationSpace.ITransform.LocalRotation">
             <summary>
-            相对旋转
+            相对空间旋转
             </summary>
         </member>
         <member name="P:TransformationSpace.ITransform.ToLocalMatrix">
@@ -225,7 +239,7 @@
         </member>
         <member name="P:TransformationSpace.ITransform.LocalRotationEuler">
             <summary>
-            相对旋转(Euler)
+            相对空间旋转(Euler)
             </summary>
         </member>
         <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@)">
@@ -262,7 +276,7 @@
         </member>
         <member name="T:TransformationSpace.IRender">
             <summary>
-            或许有新功能
+            或许有新功能，之后脏标记更新方案
             </summary>
         </member>
         <member name="P:TransformationSpace.IRender.Order">
@@ -456,35 +470,6 @@
             <param name="This"></param>
             <param name="PassIndex"></param>
             <returns></returns>
-        </member>
-        <member name="T:TransformationSpace.DataStorage`1">
-            <summary>
-            data with dirty flag
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:TransformationSpace.DataStorage`1.Data">
-            <summary>
-            target data
-            </summary>
-        </member>
-        <member name="P:TransformationSpace.DataStorage`1.Dirty">
-            <summary>
-            data changed flag
-            </summary>
-        </member>
-        <member name="M:TransformationSpace.DataStorage`1.SetData(`0)">
-            <summary>
-            set data and dont set flag
-            </summary>
-            <param name="Data"></param>
-        </member>
-        <member name="M:TransformationSpace.DataStorage`1.#ctor(`0@,System.Boolean@)">
-            <summary>
-            
-            </summary>
-            <param name="Data">default data</param>
-            <param name="SetChanged">defaut flag</param>
         </member>
     </members>
 </doc>
