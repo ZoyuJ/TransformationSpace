@@ -25,6 +25,10 @@ base on newtonsoft.json</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TransformationSpace.Serializa.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
   </ItemGroup>

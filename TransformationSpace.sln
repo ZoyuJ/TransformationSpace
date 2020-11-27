@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Try", "Try\Try.csproj", "{F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformationSpace.Serializa", "TransformationSpace.Serializa\TransformationSpace.Serializa.csproj", "{6006935B-E154-49E5-83DC-678DA55CE8CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformationSpace.DirtyAdapted", "TransformationSpace.DirtyAdapted\TransformationSpace.DirtyAdapted.csproj", "{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformationSpace.DirtyAdapted", "TransformationSpace.DirtyAdapted\TransformationSpace.DirtyAdapted.csproj", "{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -90,7 +90,7 @@
     public static readonly Quaternion QuaternionNegZ = new Quaternion(0f, 0f, -1f, 0f);
 
 
-    public static bool ToClose(in this float Left, in float Right) => Math.Abs(Left - Right) <= Epsilon;
+    public static bool TooClose(in this float Left, in float Right) => Math.Abs(Left - Right) <= Epsilon;
     public static bool ToClose(in this Vector3 Left, in Vector3 Right) => Math.Abs(Left.X - Right.X) <= Epsilon && Math.Abs(Left.Y - Right.Y) <= Epsilon && Math.Abs(Left.Z - Right.Z) <= Epsilon;
     public static bool ToClose(in this Quaternion Left, in Quaternion Right) => Math.Abs(Left.X - Right.X) <= Epsilon && Math.Abs(Left.Y - Right.Y) <= Epsilon && Math.Abs(Left.Z - Right.Z) <= Epsilon && Math.Abs(Left.W - Right.W) <= Epsilon;
     //public static bool ToClose(in this Matrix4x4 Left, in Matrix4x4 Right) => Math.Abs(Left - Right) <= Epsilon;
@@ -129,27 +129,33 @@
     /// <returns></returns>
     public static Vector3 ToEuler(this Quaternion This) {
       if (This.X + This.Z == 0F) This = new Quaternion(0F, This.Y, 0F, This.W);
-      if (This.X + This.Y == 0F) This = new Quaternion(0F, 0F, This.Z, This.W);
-      if (This.Z + This.Y == 0F) This = new Quaternion(This.X, 0F, 0f, This.W);
+      else if (This.X + This.Y == 0F) This = new Quaternion(0F, 0F, This.Z, This.W);
+      else if (This.Z + This.Y == 0F) This = new Quaternion(This.X, 0F, 0f, This.W);
       if (This.ToClose(Quaternion.Identity)) return EulerIdentityZero;
-      if (This.ToClose(Quaternion.Identity)) return EulerIdentityPos;
-      if (This.ToClose(QuaternionIdentityNeg)) return EulerIdentityNeg;
-      if (This.ToClose(QuaternionPosX)) return EulerPosX;
-      if (This.ToClose(QuaternionNegX)) return EulerNegX;
-      if (This.ToClose(QuaternionPosY)) return EulerPosY;
-      if (This.ToClose(QuaternionNegY)) return EulerNegY;
-      if (This.ToClose(QuaternionPosZ)) return EulerPosZ;
-      if (This.ToClose(QuaternionNegZ)) return EulerNegZ;
+      else if (This.ToClose(Quaternion.Identity)) return EulerIdentityPos;
+      else if (This.ToClose(QuaternionIdentityNeg)) return EulerIdentityNeg;
+      else if (This.ToClose(QuaternionPosX)) return EulerPosX;
+      else if (This.ToClose(QuaternionNegX)) return EulerNegX;
+      else if (This.ToClose(QuaternionPosY)) return EulerPosY;
+      else if (This.ToClose(QuaternionNegY)) return EulerNegY;
+      else if (This.ToClose(QuaternionPosZ)) return EulerPosZ;
+      else if (This.ToClose(QuaternionNegZ)) return EulerNegZ;
       This = Quaternion.Normalize(This);
       float LengthSqr = This.LengthSquared();
-      return new Vector3(
-               This.X.ToClose(0F) ? 0F : (float)(Math.Atan2(2.0f * (This.Y * This.Z + This.X * This.W), 1.0f - 2.0f * (This.X * This.X + This.Y * This.Y))) * Rad2Deg,
-               This.Y.ToClose(0F) ? 0F : (float)(Math.Asin(2.0f * (This.Y * This.W - This.X * This.Z) / LengthSqr)) * Rad2Deg,
-               This.Z.ToClose(0F) ? 0F : (float)(Math.Atan2(2.0f * (This.X * This.Y + This.Z * This.W), 1.0f - 2.0f * (This.Y * This.Y + This.Z * This.Z))) * Rad2Deg
+      var Eul = new Vector3(
+             (float)(Math.Atan2(2.0f * (This.Y * This.Z + This.X * This.W), 1.0f - 2.0f * (This.X * This.X + This.Y * This.Y))) * Rad2Deg,
+             (float)(Math.Asin(2.0f * (This.Y * This.W - This.X * This.Z) / LengthSqr)) * Rad2Deg,
+            (float)(Math.Atan2(2.0f * (This.X * This.Y + This.Z * This.W), 1.0f - 2.0f * (This.Y * This.Y + This.Z * This.Z))) * Rad2Deg
                );
-
+      return Eul.MinimumRotate();
     }
 
+    private static Vector3 MinimumRotate(in this Vector3 This) {
+      if (This.X.TooClose(180) && This.Z.TooClose(180)) return new Vector3(0, 180 - This.Y, 0);
+      if (This.Y.TooClose(180) && This.Z.TooClose(180)) return new Vector3(180 - This.X, 0, 0);
+      if (This.X.TooClose(180) && This.Y.TooClose(180)) return new Vector3(0, 0, 180 - This.Z);
+      return This;
+    }
 
     /// <summary>
     /// 

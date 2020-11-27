@@ -69,8 +69,8 @@
       writer.WriteStartObject();
       writer.WritePropertyName(nameof(_value.Name));
       writer.WriteValue(_value.Name);
-      writer.WritePropertyName(nameof(_value.Order));
-      writer.WriteValue(_value.Order);
+      //writer.WritePropertyName(nameof(_value.Order));
+      //writer.WriteValue(_value.Order);
       writer.WritePropertyName(nameof(_value.LocalPosition));
       serializer.Serialize(writer, _value.LocalPosition);
       writer.WritePropertyName(nameof(_value.LocalRotation));
@@ -93,9 +93,9 @@
             case nameof(SpaceObject.Name):
               Target.Name = reader.ReadAsString();
               break;
-            case nameof(SpaceObject.Order):
-              Target.Order = reader.ReadAsInt32().Value;
-              break;
+            //case nameof(SpaceObject.Order):
+            //  Target.Order = reader.ReadAsInt32().Value;
+            //  break;
             case nameof(SpaceObject.LocalPosition):
               reader.Read();
               Target.LocalPosition = serializer.Deserialize<Vector3>(reader);

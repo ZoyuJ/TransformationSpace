@@ -34,11 +34,6 @@
             子级
             </summary>
         </member>
-        <member name="P:TransformationSpace.SpaceObject.Order">
-            <summary>
-            <inheritdoc/>
-            </summary>
-        </member>
         <member name="P:TransformationSpace.SpaceObject.Position">
             <summary>
             世界空间偏移
@@ -112,7 +107,7 @@
             <param name="sender"></param>
             <param name="Args"></param>
         </member>
-        <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@)">
+        <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@,System.Boolean)">
             <summary>
             朝向
             </summary>
@@ -179,14 +174,12 @@
             <param name="Index"></param>
             <returns></returns>
         </member>
-        <member name="M:TransformationSpace.SpaceObject.CompareTo(TransformationSpace.SpaceObject)">
+        <member name="P:TransformationSpace.SpaceObject.World">
             <summary>
             比较
             </summary>
             <param name="other"></param>
             <returns></returns>
-        </member>
-        <member name="P:TransformationSpace.SpaceObject.World">
             <summary>
             默认世界空间
             </summary>
@@ -242,7 +235,7 @@
             相对空间旋转(Euler)
             </summary>
         </member>
-        <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@)">
+        <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@,System.Boolean)">
             <summary>
             朝向
             </summary>
@@ -274,14 +267,19 @@
             </summary>
             <param name="Position">相对空间矢量</param>
         </member>
-        <member name="T:TransformationSpace.IRender">
+        <member name="T:TransformationSpace.ITransformLifeTime">
             <summary>
-            或许有新功能，之后脏标记更新方案
+            
             </summary>
         </member>
-        <member name="P:TransformationSpace.IRender.Order">
+        <member name="M:TransformationSpace.ITransformLifeTime.OnEngage">
             <summary>
-            set 0,do comparer,no func
+            Object Joined In Space
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.ITransformLifeTime.OnEject">
+            <summary>
+            Object Removed From Space
             </summary>
         </member>
         <member name="T:TransformationSpace.ITransformHieraryEntity`1">

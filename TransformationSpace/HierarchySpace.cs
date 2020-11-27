@@ -11,12 +11,7 @@ namespace TransformationSpace {
   /// <summary>
   /// TramsformationSpace节点
   /// </summary>
-  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, IEnumerable<SpaceObject>, INotifyPropertyChanged {
-    protected static readonly Matrix4x4 WorldBase;
-    static SpaceObject() {
-      WorldBase = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY); //Matrix4x4.Identity;/* Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitX);*/
-
-    }
+  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, ITransformLifeTime, IEnumerable<SpaceObject>, INotifyPropertyChanged {
     /// <summary>
     /// need this?
     /// </summary>
@@ -28,7 +23,9 @@ namespace TransformationSpace {
       _LocalScale = Vector3.One;
       _LocalRotation = Quaternion.Identity;
       _LocalPosition = Vector3.Zero;
-      _ToLocalMatrix = WorldBase;
+      _Rotation = Quaternion.Identity;
+      _Position = Vector3.Zero;
+      _ToLocalMatrix = Matrix4x4.Identity;
       Matrix4x4.Invert(_ToLocalMatrix, out _ToWorldMatrix);
       Children = new ObservableCollection<SpaceObject>();
       Children.CollectionChanged += OnChildrenChanged;
@@ -41,7 +38,8 @@ namespace TransformationSpace {
     /// 父级
     /// </summary>
     public SpaceObject Parent {
-      get => _Parent; set {
+      get => _Parent;
+      set {
         if (Kits.CompareAndSet(value, ref _Parent)) {
           UpdateSelfFromLocal();
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Parent)));
@@ -55,7 +53,7 @@ namespace TransformationSpace {
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public int Order { get; set; } = 0;
+    //public int Order { get; set; } = 0;
 
     #region Transform
     /// <summary>
@@ -66,9 +64,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _Position)) {
           UpdateSelfFromWorld();
-          //UpdateChildren();
-          //LocalPosition = Vector3.Transform(value, _ToLocalMatrix);
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
+          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
         }
       }
     }
@@ -81,9 +77,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _Rotation)) {
           UpdateSelfFromWorld();
-          //UpdateChildren();
-          //LocalRotation = Quaternion.Multiply(value, Quaternion.CreateFromRotationMatrix(_ToLocalMatrix));
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rotation)));
+          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rotation)));
         }
       }
     }
@@ -97,7 +91,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _LocalScale)) {
           UpdateSelfFromLocal();
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalScale)));
+          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalScale)));
         }
       }
     }
@@ -110,7 +104,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _LocalPosition)) {
           UpdateSelfFromLocal();
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalPosition)));
+          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalPosition)));
         }
       }
     }
@@ -123,7 +117,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _LocalRotation)) {
           UpdateSelfFromLocal();
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalRotation)));
+          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalRotation)));
         }
       }
     }
@@ -167,6 +161,7 @@ namespace TransformationSpace {
         _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
       }
       Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SpaceObject)));
       UpdateChildrenFromLocal();
     }
     /// <summary>
@@ -184,6 +179,7 @@ namespace TransformationSpace {
         _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
       }
       Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SpaceObject)));
       UpdateChildrenFromWorld();
     }
     /// <summary>
@@ -220,6 +216,7 @@ namespace TransformationSpace {
               Item.Parent.Children.Remove(Item);
             }
             Item.Parent = this;
+            Item.OnEngage();
           }
         }
       }
@@ -228,6 +225,7 @@ namespace TransformationSpace {
           for (int i = 0; i < Args.NewItems.Count; i++) {
             var Item = Args.NewItems[i] as SpaceObject;
             Item.Parent = null;
+            Item.OnEject();
           }
         }
       }
@@ -258,8 +256,7 @@ namespace TransformationSpace {
         default:
           break;
       }
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Children)));
-
+      //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Children)));
     }
     #endregion
 
@@ -270,8 +267,9 @@ namespace TransformationSpace {
     /// </summary>
     /// <param name="Position">世界空间坐标</param>
     public void LookAt(in Vector3 Position) {
-      if (this.Position.X == Position.X && this.Position.Z == Position.Z) return;
       var To2From = Vector3.Normalize(Position - this.Position);
+      var Dot = Vector3.Dot(To2From, Vector3.UnitZ);
+      if (Dot == 0) return;
       var side = Vector3.Normalize(Vector3.Cross(Vector3.Normalize(Vector3.UnitY), To2From));
       var up = Vector3.Normalize(Vector3.Cross(To2From, side));
       var LMat = new Matrix4x4(
@@ -280,7 +278,7 @@ namespace TransformationSpace {
         To2From.X, To2From.Y, To2From.Z, /*-Vector3.Dot(To2From, this.Position)*/0f,
         0.0f, 0.0f, 0.0f, 1.0f
         );
-      this.Rotation = Quaternion.CreateFromRotationMatrix(LMat);// Kits.FromRotationMatrix2(LMat);
+      this.Rotation = Quaternion.CreateFromRotationMatrix(LMat);
     }
     /// <summary>
     /// <inheritdoc/>
@@ -361,7 +359,6 @@ namespace TransformationSpace {
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public int CompareTo([AllowNull] SpaceObject other) => this.GetHashCode().CompareTo(other.GetHashCode());
 
     /// <summary>
     /// 默认世界空间
@@ -376,6 +373,20 @@ namespace TransformationSpace {
       }
     }
 
+    //public int Order { get; protected set; }
+    public virtual void OnEngage() {
+      if (Children.Count > 0)
+        for (int i = 0; i < Children.Count; i++) {
+          Children[i].OnEngage();
+        }
+    }
+    public virtual void OnEject() {
+      PropertyChanged = null;
+      if (Children.Count > 0)
+        for (int i = 0; i < Children.Count; i++) {
+          Children[i].OnEject();
+        }
+    }
   }
 
 }

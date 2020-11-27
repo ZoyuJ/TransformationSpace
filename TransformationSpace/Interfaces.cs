@@ -76,20 +76,25 @@
 
   }
   /// <summary>
-  /// 或许有新功能，之后脏标记更新方案
+  /// 
   /// </summary>
-  public interface IRender {
+  public interface ITransformLifeTime {
     /// <summary>
-    /// set 0,do comparer,no func
+    /// Object Joined In Space
     /// </summary>
-    int Order { get; }
-    //bool HasChanged { get; set; }
+    void OnEngage();
+    //void OnUpdate();
+    /// <summary>
+    /// Object Removed From Space
+    /// </summary>
+    void OnEject();
+
   }
   /// <summary>
   /// 层级与层级事件相关
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  public interface ITransformHieraryEntity<T> : IRender, ITransform, IComparable<T> where T : ITransformHieraryEntity<T> {
+  public interface ITransformHieraryEntity<T> : ITransform where T : ITransformHieraryEntity<T> {
     /// <summary>
     /// 父级
     /// </summary>
