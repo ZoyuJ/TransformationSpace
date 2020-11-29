@@ -11,7 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformationSpace.Seriali
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformationSpace.DirtyAdapted", "TransformationSpace.DirtyAdapted\TransformationSpace.DirtyAdapted.csproj", "{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TransformationSpaceCommon", "TransformationSpaceCommon\TransformationSpaceCommon.shproj", "{058BD291-E876-477E-99A8-0C55A0DB285A}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TransformationSpaceCommon\TransformationSpaceCommon.projitems*{058bd291-e876-477e-99a8-0c55a0db285a}*SharedItemsImports = 13
+		TransformationSpaceCommon\TransformationSpaceCommon.projitems*{95db9260-48d2-42c5-82a8-8568ca7f2360}*SharedItemsImports = 5
+		TransformationSpaceCommon\TransformationSpaceCommon.projitems*{a2dbd5f0-baec-48b3-9571-ed4b86d61f99}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

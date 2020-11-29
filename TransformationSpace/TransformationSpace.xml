@@ -107,7 +107,7 @@
             <param name="sender"></param>
             <param name="Args"></param>
         </member>
-        <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@,System.Boolean)">
+        <member name="M:TransformationSpace.SpaceObject.LookAt(System.Numerics.Vector3@)">
             <summary>
             朝向
             </summary>
@@ -235,7 +235,7 @@
             相对空间旋转(Euler)
             </summary>
         </member>
-        <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@,System.Boolean)">
+        <member name="M:TransformationSpace.ITransform.LookAt(System.Numerics.Vector3@)">
             <summary>
             朝向
             </summary>

@@ -111,14 +111,14 @@
     /// <returns></returns>
     public static Quaternion FromEuler(in Vector3 Rotate) {
       if (Rotate.ToClose(EulerIdentityZero)) return Quaternion.Identity;
-      if (Rotate.ToClose(EulerIdentityPos)) return Quaternion.Identity;
-      if (Rotate.ToClose(EulerIdentityNeg)) return QuaternionIdentityNeg;
-      if (Rotate.ToClose(EulerPosX)) return QuaternionPosX;
-      if (Rotate.ToClose(EulerNegX)) return QuaternionNegX;
-      if (Rotate.ToClose(EulerPosY)) return QuaternionPosY;
-      if (Rotate.ToClose(EulerNegY)) return QuaternionNegY;
-      if (Rotate.ToClose(EulerPosZ)) return QuaternionPosZ;
-      if (Rotate.ToClose(EulerNegZ)) return QuaternionNegZ;
+      else if (Rotate.ToClose(EulerIdentityPos)) return Quaternion.Identity;
+      else if (Rotate.ToClose(EulerIdentityNeg)) return QuaternionIdentityNeg;
+      else if (Rotate.ToClose(EulerPosX)) return QuaternionPosX;
+      else if (Rotate.ToClose(EulerNegX)) return QuaternionNegX;
+      else if (Rotate.ToClose(EulerPosY)) return QuaternionPosY;
+      else if (Rotate.ToClose(EulerNegY)) return QuaternionNegY;
+      else if (Rotate.ToClose(EulerPosZ)) return QuaternionPosZ;
+      else if (Rotate.ToClose(EulerNegZ)) return QuaternionNegZ;
       return Quaternion.Normalize(Quaternion.CreateFromYawPitchRoll(Rotate.Y * Deg2Rad, Rotate.X * Deg2Rad, Rotate.Z * Deg2Rad));
     }
     /// <summary>

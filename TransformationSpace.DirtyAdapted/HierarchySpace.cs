@@ -9,7 +9,7 @@
   /// <summary>
   /// TramsformationSpace节点
   /// </summary>
-  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, IEnumerable<SpaceObject> {
+  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, ITransformLifeTime, IEnumerable<SpaceObject> {
     protected static readonly Matrix4x4 WorldBase;
     static SpaceObject() {
       WorldBase = Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY); //Matrix4x4.Identity;/* Matrix4x4.CreateWorld(Vector3.Zero, Vector3.UnitZ, Vector3.UnitX);*/
@@ -42,12 +42,14 @@
         _LocalRotation.Dirty = true;
         _Rotation.Dirty = true;
         _LocalScale.Dirty = true;
+        if (_Parent.Data == null) OnEject();
+        else OnEngage();
       }
     }
     /// <summary>
     /// 子级
     /// </summary>
-    public ObservableCollection<SpaceObject> Children { get; protected set; }
+    public Collection<SpaceObject> Children { get; protected set; }
     /// <summary>
     /// need this?
     /// </summary>
@@ -258,6 +260,19 @@
         };
         return W;
       }
+    }
+
+    public virtual void OnEngage() {
+      if (Children.Count > 0)
+        for (int i = 0; i < Children.Count; i++) {
+          Children[i].OnEngage();
+        }
+    }
+    public virtual void OnEject() {
+      if (Children.Count > 0)
+        for (int i = 0; i < Children.Count; i++) {
+          Children[i].OnEject();
+        }
     }
   }
   /// <summary>

@@ -6,13 +6,14 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company>ZoyuJ</Company>
-    <Version>0.0.3.0</Version>
+    <Version>0.0.3.6</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon-2.png</PackageIcon>
     <RepositoryUrl>https://github.com/ZoyuJ/TransformationSpace</RepositoryUrl>
     <Description>Manage transformation space without rendering,like component 'Transform' in unity3d.(update by event)</Description>
     <AssemblyVersion>0.0.3.0</AssemblyVersion>
     <FileVersion>0.0.3.0</FileVersion>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,5 +45,7 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
+  <Import Project="..\TransformationSpaceCommon\TransformationSpaceCommon.projitems" Label="Shared" />
 
 </Project>

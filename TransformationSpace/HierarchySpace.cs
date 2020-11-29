@@ -28,7 +28,7 @@ namespace TransformationSpace {
       _ToLocalMatrix = Matrix4x4.Identity;
       Matrix4x4.Invert(_ToLocalMatrix, out _ToWorldMatrix);
       Children = new ObservableCollection<SpaceObject>();
-      Children.CollectionChanged += OnChildrenChanged;
+      (Children as ObservableCollection<SpaceObject>).CollectionChanged += OnChildrenChanged;
     }
     /// <summary>
     /// 父级
@@ -49,7 +49,7 @@ namespace TransformationSpace {
     /// <summary>
     /// 子级
     /// </summary>
-    public ObservableCollection<SpaceObject> Children { get; protected set; }
+    public Collection<SpaceObject> Children { get; protected set; }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

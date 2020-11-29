@@ -102,7 +102,7 @@
     /// <summary>
     /// 子级
     /// </summary>
-    ObservableCollection<T> Children { get; }
+    Collection<T> Children { get; }
     /// <summary>
     /// need this?
     /// </summary>
