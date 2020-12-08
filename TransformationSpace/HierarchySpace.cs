@@ -50,10 +50,6 @@ namespace TransformationSpace {
     /// 子级
     /// </summary>
     public Collection<SpaceObject> Children { get; protected set; }
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    //public int Order { get; set; } = 0;
 
     #region Transform
     /// <summary>
@@ -68,6 +64,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Vector3 _Position;
     /// <summary>
     /// 世界空间旋转
@@ -81,6 +80,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Quaternion _Rotation;
     /// <summary>
     /// 相对空间缩放
@@ -95,6 +97,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Vector3 _LocalScale;
     /// <summary>
     /// 相对空间偏移
@@ -108,6 +113,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Vector3 _LocalPosition;
     /// <summary>
     /// 相对空间旋转
@@ -121,6 +129,9 @@ namespace TransformationSpace {
         }
       }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Quaternion _LocalRotation;
     /// <summary>
     /// 世界空间旋转(Euler)
@@ -354,11 +365,6 @@ namespace TransformationSpace {
     }
 
     #endregion
-    /// <summary>
-    /// 比较
-    /// </summary>
-    /// <param name="other"></param>
-    /// <returns></returns>
 
     /// <summary>
     /// 默认世界空间
@@ -374,12 +380,18 @@ namespace TransformationSpace {
     }
 
     //public int Order { get; protected set; }
+    /// <summary>
+    /// 当物体加入空间树
+    /// </summary>
     public virtual void OnEngage() {
       if (Children.Count > 0)
         for (int i = 0; i < Children.Count; i++) {
           Children[i].OnEngage();
         }
     }
+    /// <summary>
+    /// 当物体移出空间树
+    /// </summary>
     public virtual void OnEject() {
       PropertyChanged = null;
       if (Children.Count > 0)
@@ -387,6 +399,8 @@ namespace TransformationSpace {
           Children[i].OnEject();
         }
     }
+
+    
   }
 
 }

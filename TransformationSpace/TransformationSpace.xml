@@ -39,9 +39,19 @@
             世界空间偏移
             </summary>
         </member>
+        <member name="F:TransformationSpace.SpaceObject._Position">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:TransformationSpace.SpaceObject.Rotation">
             <summary>
             世界空间旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.SpaceObject._Rotation">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.LocalScale">
@@ -50,14 +60,29 @@
             with out test and func
             </summary>
         </member>
+        <member name="F:TransformationSpace.SpaceObject._LocalScale">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:TransformationSpace.SpaceObject.LocalPosition">
             <summary>
             相对空间偏移
             </summary>
         </member>
+        <member name="F:TransformationSpace.SpaceObject._LocalPosition">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:TransformationSpace.SpaceObject.LocalRotation">
             <summary>
             相对空间旋转
+            </summary>
+        </member>
+        <member name="F:TransformationSpace.SpaceObject._LocalRotation">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:TransformationSpace.SpaceObject.RotationEuler">
@@ -176,12 +201,17 @@
         </member>
         <member name="P:TransformationSpace.SpaceObject.World">
             <summary>
-            比较
-            </summary>
-            <param name="other"></param>
-            <returns></returns>
-            <summary>
             默认世界空间
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.OnEngage">
+            <summary>
+            当物体加入空间树
+            </summary>
+        </member>
+        <member name="M:TransformationSpace.SpaceObject.OnEject">
+            <summary>
+            当物体移出空间树
             </summary>
         </member>
         <member name="T:TransformationSpace.ITransform">

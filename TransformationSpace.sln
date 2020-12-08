@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformationSpace.DirtyAd
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TransformationSpaceCommon", "TransformationSpaceCommon\TransformationSpaceCommon.shproj", "{058BD291-E876-477E-99A8-0C55A0DB285A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformationSpace.Extension", "TransformationSpace.Extension\TransformationSpace.Extension.csproj", "{F69C9D55-4EF1-4F5A-993F-22300E1E3DA1}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TransformationSpaceCommon\TransformationSpaceCommon.projitems*{058bd291-e876-477e-99a8-0c55a0db285a}*SharedItemsImports = 13
@@ -40,6 +42,10 @@ Global
 		{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2DBD5F0-BAEC-48B3-9571-ED4B86D61F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69C9D55-4EF1-4F5A-993F-22300E1E3DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69C9D55-4EF1-4F5A-993F-22300E1E3DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69C9D55-4EF1-4F5A-993F-22300E1E3DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69C9D55-4EF1-4F5A-993F-22300E1E3DA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
