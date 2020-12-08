@@ -242,7 +242,7 @@
     #endregion
 
 
-    public int CompareTo([AllowNull] SpaceObject other) => this.GetHashCode().CompareTo(other.GetHashCode());
+    public int CompareTo(SpaceObject other) => this.GetHashCode().CompareTo(other.GetHashCode());
 
 
     public IEnumerator<SpaceObject> GetEnumerator() => Children.GetEnumerator();
