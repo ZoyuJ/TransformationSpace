@@ -2,10 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>ZoyuJ</Authors>
+    <Company>ZoyuJ</Company>
+    <Version>0.0.3.6</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ZoyuJ/TransformationSpace</RepositoryUrl>
+    <PackageIcon>Icon-2.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TransformationSpace\TransformationSpace.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Icon-2.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
