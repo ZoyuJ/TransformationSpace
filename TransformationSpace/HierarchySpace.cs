@@ -8,12 +8,16 @@ namespace TransformationSpace {
   using System.Diagnostics.CodeAnalysis;
   using System.Numerics;
 
+  public interface IRoutingNotifyPropertyChanged : INotifyPropertyChanged {
+    //public event 
+  }
+
   /// <summary>
   /// TramsformationSpace节点
   /// </summary>
-  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, ITransformLifeTime, IEnumerable<SpaceObject>, INotifyPropertyChanged {
+  public class SpaceObject : ITransformHieraryEntity<SpaceObject>, ITransformLifeTime, IEnumerable<SpaceObject> {
     /// <summary>
-    /// need this?
+    /// 名称
     /// </summary>
     public string Name { get; set; }
     /// <summary>
@@ -28,7 +32,7 @@ namespace TransformationSpace {
       _ToLocalMatrix = Matrix4x4.Identity;
       Matrix4x4.Invert(_ToLocalMatrix, out _ToWorldMatrix);
       Children = new ObservableCollection<SpaceObject>();
-      (Children as ObservableCollection<SpaceObject>).CollectionChanged += OnChildrenChanged;
+      (Children as ObservableCollection<SpaceObject>).CollectionChanged += HandleChildrenChanged;
     }
     /// <summary>
     /// 父级
@@ -42,7 +46,7 @@ namespace TransformationSpace {
       set {
         if (Kits.CompareAndSet(value, ref _Parent)) {
           UpdateSelfFromLocal();
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Parent)));
+          OnParentChanged?.Invoke(this);
         }
       }
     }
@@ -59,8 +63,7 @@ namespace TransformationSpace {
       get => _Position;
       set {
         if (Kits.CompareAndSet(value, ref _Position)) {
-          UpdateSelfFromWorld();
-          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
+          UpdateSelfFromWorld(this);
         }
       }
     }
@@ -75,8 +78,7 @@ namespace TransformationSpace {
       get => _Rotation;
       set {
         if (Kits.CompareAndSet(value, ref _Rotation)) {
-          UpdateSelfFromWorld();
-          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rotation)));
+          UpdateSelfFromWorld(this);
         }
       }
     }
@@ -92,8 +94,7 @@ namespace TransformationSpace {
       get => _LocalScale;
       set {
         if (Kits.CompareAndSet(value, ref _LocalScale)) {
-          UpdateSelfFromLocal();
-          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalScale)));
+          UpdateSelfFromLocal(this);
         }
       }
     }
@@ -108,8 +109,7 @@ namespace TransformationSpace {
       get => _LocalPosition;
       set {
         if (Kits.CompareAndSet(value, ref _LocalPosition)) {
-          UpdateSelfFromLocal();
-          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalPosition)));
+          UpdateSelfFromLocal(this);
         }
       }
     }
@@ -124,8 +124,7 @@ namespace TransformationSpace {
       get => _LocalRotation;
       set {
         if (Kits.CompareAndSet(value, ref _LocalRotation)) {
-          UpdateSelfFromLocal();
-          //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalRotation)));
+          UpdateSelfFromLocal(this);
         }
       }
     }
@@ -160,7 +159,7 @@ namespace TransformationSpace {
     /// <summary>
     /// 通过相对空间更新自身TRS和Matrix
     /// </summary>
-    public virtual void UpdateSelfFromLocal() {
+    protected virtual void UpdateSelfFromLocal() {
       if (Parent == null) {
         _Position = LocalPosition;
         _Rotation = LocalRotation;
@@ -172,13 +171,20 @@ namespace TransformationSpace {
         _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
       }
       Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SpaceObject)));
-      UpdateChildrenFromLocal();
+    }
+    /// <summary>
+    /// 通过相对空间更新自身TRS和Matrix
+    /// </summary>
+    /// <param name="Source">更新来源</param>
+    protected virtual void UpdateSelfFromLocal(SpaceObject Source) {
+      UpdateSelfFromLocal();
+      OnSourcePropertyChanged?.Invoke(Source, this);
+      UpdateChildrenFromLocal(Source);
     }
     /// <summary>
     /// 通过世界空间更新自身TRS和Matrix
     /// </summary>
-    public virtual void UpdateSelfFromWorld() {
+    protected virtual void UpdateSelfFromWorld() {
       if (Parent == null) {
         _ToLocalMatrix = Kits.FromTRS(Position, Rotation, LocalScale);
         _LocalPosition = Position;
@@ -190,26 +196,35 @@ namespace TransformationSpace {
         _ToLocalMatrix = Matrix4x4.Multiply(Parent.ToLocalMatrix, Kits.FromTRS(LocalPosition, LocalRotation, LocalScale));
       }
       Matrix4x4.Invert(ToLocalMatrix, out _ToWorldMatrix);
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SpaceObject)));
-      UpdateChildrenFromWorld();
+      //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SpaceObject)));
     }
+    /// <summary>
+    /// 通过世界空间更新自身TRS和Matrix
+    /// </summary>
+    /// <param name="Source">更新来源</param>
+    protected virtual void UpdateSelfFromWorld(SpaceObject Source) {
+      UpdateSelfFromWorld();
+      OnSourcePropertyChanged?.Invoke(Source, this);
+      UpdateChildrenFromWorld(Source);
+    }
+
     /// <summary>
     /// 通过相对空间更新子级TRS和Matrix
     /// </summary>
-    public virtual void UpdateChildrenFromLocal() {
+    protected virtual void UpdateChildrenFromLocal(SpaceObject Source) {
       if (Children.Count > 0) {
         for (int i = 0; i < Children.Count; i++) {
-          Children[i].UpdateSelfFromLocal();
+          Children[i].UpdateSelfFromLocal(Source);
         }
       }
     }
     /// <summary>
     /// 通过世界空间更新子级TRS和Matrix
     /// </summary>
-    public virtual void UpdateChildrenFromWorld() {
+    protected virtual void UpdateChildrenFromWorld(SpaceObject Source) {
       if (Children.Count > 0) {
         for (int i = 0; i < Children.Count; i++) {
-          Children[i].UpdateSelfFromWorld();
+          Children[i].UpdateSelfFromWorld(Source);
         }
       }
     }
@@ -218,7 +233,7 @@ namespace TransformationSpace {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="Args"></param>
-    protected virtual void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs Args) {
+    protected virtual void HandleChildrenChanged(object sender, NotifyCollectionChangedEventArgs Args) {
       void HandleNew() {
         if (Args.NewItems != null && Args.NewItems.Count > 0) {
           for (int i = 0; i < Args.NewItems.Count; i++) {
@@ -235,7 +250,6 @@ namespace TransformationSpace {
         if (Args.NewItems != null && Args.OldItems.Count > 0) {
           for (int i = 0; i < Args.NewItems.Count; i++) {
             var Item = Args.NewItems[i] as SpaceObject;
-            Item.Parent = null;
             Item.OnEject();
           }
         }
@@ -267,7 +281,7 @@ namespace TransformationSpace {
         default:
           break;
       }
-      //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Children)));
+      OnChildrenChanged?.Invoke(this, Args);
     }
     #endregion
 
@@ -332,10 +346,17 @@ namespace TransformationSpace {
 
     #endregion
     /// <summary>
-    /// <inheritdoc/>
+    /// 当TRS,LocalTRS发生变化
     /// </summary>
-    public event PropertyChangedEventHandler PropertyChanged;
-
+    public event SourcePropertyChangedEventHandler OnSourcePropertyChanged;
+    /// <summary>
+    /// 当子物体增加/移除
+    /// </summary>
+    public event ChildrenChangedEventHandler OnChildrenChanged;
+    /// <summary>
+    /// 当自己的父级发生更改
+    /// </summary>
+    public event ParentChangedEventHandler OnParentChanged;
     #region Itera
     /// <summary>
     /// 遍历
@@ -379,7 +400,6 @@ namespace TransformationSpace {
       }
     }
 
-    //public int Order { get; protected set; }
     /// <summary>
     /// 当物体加入空间树
     /// </summary>
@@ -393,15 +413,23 @@ namespace TransformationSpace {
     /// 当物体移出空间树
     /// </summary>
     public virtual void OnEject() {
-      PropertyChanged = null;
+      OnSourcePropertyChanged = null;
+      OnParentChanged = null;
+      OnChildrenChanged = null;
+      Parent = null;
       if (Children.Count > 0)
         for (int i = 0; i < Children.Count; i++) {
           Children[i].OnEject();
         }
     }
 
-    
+
   }
 
+
+
+  public delegate void SourcePropertyChangedEventHandler(SpaceObject Source, SpaceObject Self);
+  public delegate void ChildrenChangedEventHandler(SpaceObject Source, NotifyCollectionChangedEventArgs Args);
+  public delegate void ParentChangedEventHandler(SpaceObject Source);
 }
 

@@ -107,22 +107,22 @@
     /// need this?
     /// </summary>
     string Name { get; set; }
-    /// <summary>
-    /// 通过相对空间更新自身TRS和Matrix
-    /// </summary>
-    void UpdateSelfFromLocal();
-    /// <summary>
-    /// 通过世界空间更新自身TRS和Matrix
-    /// </summary>
-    void UpdateSelfFromWorld();
-    /// <summary>
-    /// 通过相对空间更新子级TRS和Matrix
-    /// </summary>
-    void UpdateChildrenFromLocal();
-    /// <summary>
-    /// 通过世界空间更新子级TRS和Matrix
-    /// </summary>
-    void UpdateChildrenFromWorld();
+    ///// <summary>
+    ///// 通过相对空间更新自身TRS和Matrix
+    ///// </summary>
+    //void UpdateSelfFromLocal();
+    ///// <summary>
+    ///// 通过世界空间更新自身TRS和Matrix
+    ///// </summary>
+    //void UpdateSelfFromWorld();
+    ///// <summary>
+    ///// 通过相对空间更新子级TRS和Matrix
+    ///// </summary>
+    //void UpdateChildrenFromLocal();
+    ///// <summary>
+    ///// 通过世界空间更新子级TRS和Matrix
+    ///// </summary>
+    //void UpdateChildrenFromWorld();
     /// <summary>
     /// 子物体索引
     /// </summary>
