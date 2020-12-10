@@ -8,10 +8,6 @@ namespace TransformationSpace {
   using System.Diagnostics.CodeAnalysis;
   using System.Numerics;
 
-  public interface IRoutingNotifyPropertyChanged : INotifyPropertyChanged {
-    //public event 
-  }
-
   /// <summary>
   /// TramsformationSpace节点
   /// </summary>
@@ -425,8 +421,6 @@ namespace TransformationSpace {
 
 
   }
-
-
 
   public delegate void SourcePropertyChangedEventHandler(SpaceObject Source, SpaceObject Self);
   public delegate void ChildrenChangedEventHandler(SpaceObject Source, NotifyCollectionChangedEventArgs Args);
