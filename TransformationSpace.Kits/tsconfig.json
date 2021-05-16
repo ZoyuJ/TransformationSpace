@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "allowJs": false,
+    "removeComments": true,
+    "declaration": true,
+    "sourceMap": true,
+    "target": "es5",
+    "lib": [ "ES2015" ],
+    "outDir": "./bin"
+  },
+  "exclude": [
+    "node_modules",
+    "bin",
+    "lib"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "transformation-space-kits",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "",
+  "author": {
+    "name": "ZoyuJ"
+  },
+  "files": [
+    "./bin/*"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+  }
+}

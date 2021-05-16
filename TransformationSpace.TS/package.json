@@ -1,0 +1,20 @@
+{
+  "name": "TransformationSpace.TS",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "",
+  "author": {
+    "name": ""
+  },
+  "files": [
+    "./bin/*"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {}
+}
